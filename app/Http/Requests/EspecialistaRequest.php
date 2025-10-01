@@ -26,7 +26,7 @@ class EspecialistaRequest extends FormRequest
             'apellido' => 'required|string|max:255',
             'telefono' => 'required|string|max:50',
             'email'  => 'required|string|email|max:255',
-            'estado' => 'default:1',
+            'estado' => 'boolean',
             'id_sucursal' => 'required|integer|exists:sucursales,id',
             'id_servicio' => 'required|integer|exists:servicios,id'
         ];

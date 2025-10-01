@@ -25,7 +25,7 @@ class SucursalRequest extends FormRequest
             'nombre' => 'required|string|max:255',
             'direccion' => 'required|string|max:80',
             'telefono' => 'requiered|string|max:50',
-            'estado' => 'default:1',
+            'estado' => 'boolean',
         ];
     }
 }

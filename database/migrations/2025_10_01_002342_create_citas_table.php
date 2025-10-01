@@ -18,7 +18,7 @@ return new class extends Migration
             $table->boolean('estado')->default(1);
             $table->foreignId('id_usuario')->constrained('users');
             $table->foreignId('id_servicio')->constrained('servicios')->onDelete('cascade');
-            $table->foreignId('id_empleado')->constrained('empleados')->onDelete('cascade');
+            $table->foreignId('id_especialista')->constrained('especialistas')->onDelete('cascade');
             $table->foreignId('id_sucursal')->constrained('sucursales')->onDelete('cascade');
             $table->timestamps();
         });
