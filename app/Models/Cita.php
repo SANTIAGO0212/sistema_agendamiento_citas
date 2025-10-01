@@ -19,7 +19,7 @@ class Cita extends Model
         'estado',
         'id_usuario',
         'id_servicio',
-        'id_empleado',
+        'id_especialista',
         'id_sucursal'
     ];
 
@@ -31,19 +31,19 @@ class Cita extends Model
 
     public function servicios() {
 
-        return $this->belongsToMany(User::class, 'id_servicio');
+        return $this->belongsToMany(Servicio::class, 'id_servicio');
 
     }
 
     public function empleados() {
 
-        return $this->belongsToMany(User::class, 'id_empleado');
+        return $this->belongsToMany(Especialista::class, 'id_especialista');
 
     }
 
     public function sucursales() {
 
-        return $this->belongsToMany(User::class, 'id_sucursal');
+        return $this->belongsToMany(Sucursal::class, 'id_sucursal');
 
     }
 

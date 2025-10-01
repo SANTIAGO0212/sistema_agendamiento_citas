@@ -24,10 +24,10 @@ class CrearCitaRequest extends FormRequest
         return [
             'fecha' => 'required|date',
             'hora' => 'required|date_format:H:i',
-            'estado' => 'required|default:1',
+            'estado' => 'boolean',
             'id_usuario'  => 'required|integer|exists:users,id',
             'id_servicio' => 'required|integer|exists:servicios,id',
-            'id_empleado' => 'required|integer|exists:empleados,id',
+            'id_especialista' => 'required|integer|exists:especialistas,id',
             'id_sucursal' => 'required|integer|exists:sucursales,id'
         ];
     }
