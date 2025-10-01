@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Especialista;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Cita extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     protected $table = 'citas';
 
@@ -22,6 +24,7 @@ class Cita extends Model
         'id_especialista',
         'id_sucursal'
     ];
+    protected $dates = ['deleted_at'];
 
     public function users() {
 
@@ -35,7 +38,7 @@ class Cita extends Model
 
     }
 
-    public function empleados() {
+    public function especialistas() {
 
         return $this->belongsToMany(Especialista::class, 'id_especialista');
 
