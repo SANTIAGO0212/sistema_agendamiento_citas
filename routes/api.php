@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MigrationController;
 use App\Http\Controllers\SucursalController;
 use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\EspecialistaController;
 
 Route::get('test', function() {
     return response()->json(['message' => 'Funciona']);
@@ -41,6 +42,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [ServicioController::class, 'actualizar']);
         Route::delete('/{id}', [ServicioController::class, 'eliminar']);
         Route::patch('/restaurar/{id}', [ServicioController::class, 'restaurar']);
+    });
+
+        Route::prefix('especialistas')->group(function () {
+        Route::get('/', [EspecialistaController::class, 'listar']);
+        Route::post('/', [EspecialistaController::class, 'guardar']);
+        Route::put('/{id}', [EspecialistaController::class, 'actualizar']);
+        Route::delete('/{id}', [EspecialistaController::class, 'eliminar']);
+        Route::patch('/restaurar/{id}', [EspecialistaController::class, 'restaurar']);
     });
 
 
