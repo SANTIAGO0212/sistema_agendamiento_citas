@@ -8,6 +8,7 @@ use App\Http\Controllers\MigrationController;
 use App\Http\Controllers\SucursalController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\EspecialistaController;
+use App\Http\Controllers\CitasController;
 
 Route::get('test', function() {
     return response()->json(['message' => 'Funciona']);
@@ -52,5 +53,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/restaurar/{id}', [EspecialistaController::class, 'restaurar']);
     });
 
+        Route::prefix('citas')->group(function () {
+        Route::get('/', [CitasController::class, 'listar']);
+        Route::post('/', [CitasController::class, 'guardar']);
+        Route::put('/{id}', [CitasController::class, 'actualizar']);
+        Route::delete('/{id}', [CitasController::class, 'eliminar']);
+        Route::patch('/restaurar/{id}', [CitasController::class, 'restaurar']);
+    });
 
 });
