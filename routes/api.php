@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MigrationController;
 use App\Http\Controllers\SucursalController;
+use App\Http\Controllers\ServicioController;
 
 Route::get('test', function() {
     return response()->json(['message' => 'Funciona']);
@@ -33,4 +34,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/{id}', [SucursalController::class, 'eliminar']);
         Route::patch('/restaurar/{id}', [SucursalController::class, 'restaurar']);
     });
+
+        Route::prefix('servicios')->group(function () {
+        Route::get('/', [ServicioController::class, 'listar']);
+        Route::post('/', [ServicioController::class, 'guardar']);
+        Route::put('/{id}', [ServicioController::class, 'actualizar']);
+        Route::delete('/{id}', [ServicioController::class, 'eliminar']);
+        Route::patch('/restaurar/{id}', [ServicioController::class, 'restaurar']);
+    });
+
+
 });
