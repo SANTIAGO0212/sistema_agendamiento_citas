@@ -24,8 +24,18 @@ class SucursalRequest extends FormRequest
         return [
             'nombre' => 'required|string|max:255',
             'direccion' => 'required|string|max:80',
-            'telefono' => 'requiered|string|max:50',
+            'telefono' => 'required|string|max:50',
             'estado' => 'boolean',
         ];
+
+        // Para actualización (PUT/PATCH), hacer los campos opcionales
+        if ($this->isMethod('PUT') || $this->isMethod('PATCH')) {
+            $rules['nombre'] = 'sometimes|string|max:255';
+            $rules['direccion'] = 'sometimes|string|max:80';
+            $rules['telefono'] = 'sometimes|string|max:50';
+            $rules['estado'] = 'sometimes|boolean';
+        }
+
+        return $rules;
     }
 }
