@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SucursalRequest extends FormRequest
+class UpdateSucursalRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class SucursalRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre' => 'required|string|max:255',
-            'direccion' => 'required|string|max:80',
-            'telefono' => 'required|string|max:50',
+            'nombre' => 'string|max:255',
+            'direccion' => 'string|max:80',
+            'telefono' => 'string|max:50',
             'estado' => 'boolean',
         ];
     }
