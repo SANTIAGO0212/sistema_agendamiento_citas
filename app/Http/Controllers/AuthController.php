@@ -8,6 +8,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    public function view() {
+        $credenciales = User::all();
+        return view('auth.auths', compact('credenciales'));
+    }
+
+
     public function register(Request $request) {
         $request->validate([
             'name' => 'required|string',

@@ -17,7 +17,7 @@
                 <!--<li class="nav-item"><a class="nav-link" href="#portfolio">Portfolio</a></li>-->
                 <!--<li class="nav-item"><a class="nav-link" href="#about">Contáctanos</a></li>-->
                 <!--<li class="nav-item"><a class="nav-link" href="#team">Equipo de trabajo</a></li>-->
-                <li class="nav-item"><a class="nav-link" href="#contact">Ingrese aquí</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ route('auth.auths') }}">Ingrese aquí</a></li>
             </ul>
         </div>
     </div>
