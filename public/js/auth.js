@@ -24,6 +24,86 @@ function registrarse() {
         return;
     }
 
+    if (!nombre.value.trim()) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "error",
+            title: "Por favor, ingresa tu nombre completo."
+        })
+
+        return;
+    }
+
+    if (!correo.value.trim()) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "error",
+            title: "Por favor, ingresa tu correo electrónico."
+        })
+
+        return;
+    }
+
+    if (!contrasena.value.trim()) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "error",
+            title: "Por favor, ingresa la contraseña."
+        })
+
+        return;
+    }
+
+    if (contrasena.value.length > 12) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "error",
+            title: "La contraseña debe ser máximo de 12 carácteres."
+        });
+
+        return;
+    }
+
     fetch('/register', {
         method: 'POST',
         headers: {
@@ -50,9 +130,22 @@ function registrarse() {
             console.log('Resultado del procesado', result);
 
             if (result.status === 201 || result.status === 200) {
-                alert(result.data.message || 'Registro exitos');
-                console.log('Token recibido:', result.data.token);
-                console.log('Usuario:', result.data.user);
+                //alert(result.data.message || 'Registro exitos');
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: result.data.message
+                });
             }
         })
 }
@@ -67,6 +160,66 @@ function iniciar_sesion() {
     if (!token) {
         console.error('Token CSRF no encontrado');
         alert('Error de seguridad. Por favor, recarga la página.');
+        return;
+    }
+
+    if (!correo.trim()) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "error",
+            title: "Por favor, ingresa tu correo electrónico."
+        })
+
+        return;
+    }
+
+    if (!contrasena.trim()) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "error",
+            title: "Por favor, ingresa la contraseña."
+        })
+
+        return;
+    }
+
+    if (contrasena.length > 12) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "error",
+            title: "La contraseña debe ser máximo de 12 carácteres."
+        });
+
         return;
     }
 
@@ -96,9 +249,38 @@ function iniciar_sesion() {
             console.log('Resultado del procesado', result);
 
             if (result.status === 201 || result.status === 200) {
-                alert(result.data.message || 'Credenciales correctas');
-                console.log('Token recibido:', result.data.token);
-                console.log('Usuario:', result.data.user);
+                //alert(result.data.message || 'Credenciales correctas');
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: result.data.message
+                });
+            } else if (result.status === 401 || result.status === 402) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: result.data.message
+                });
             }
         })
 }
