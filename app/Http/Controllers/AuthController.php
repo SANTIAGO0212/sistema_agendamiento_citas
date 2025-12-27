@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -28,6 +29,8 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('api_token')->plainTextToken;
+
+        Auth::login($user);
         
         return response()->json([
             'user' => $user,
@@ -45,12 +48,14 @@ class AuthController extends Controller
 
         $token = $user->createToken('api_token')->plainTextToken; //general el token de acceso
 
+        Auth::login($user);
+
         return response()->json(['user' => $user, 'token' => $token, 'message' => 'credenciales correctas, ¡Bienvenido!'], 200);
     }
 
     public function logout(Request $request) {
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Has finalizado sesión'], 200);
+        return response()->json(['message' => 'Sesión finalizada correctamente'], 200);
     }
 }
