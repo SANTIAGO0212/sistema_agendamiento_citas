@@ -35,6 +35,10 @@
     <!-- Core Theme JS -->
     <script src="{{ asset('js/auth.js') }}"></script>
 
+    <!-- SweerAlert2 -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- SB Forms JS -->
     <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
 
