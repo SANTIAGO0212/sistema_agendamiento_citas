@@ -3,7 +3,7 @@
 @section('content')
 <div class="container" id="container">
     <div class="form-container sign-up">
-        <form method="POST">
+        <form method="POST" id="formulario_registro">
             @csrf
             <h1>Registrarse aquí</h1>
             <div class="social-icons">

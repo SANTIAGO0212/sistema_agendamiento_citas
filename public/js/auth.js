@@ -145,6 +145,9 @@ function registrarse() {
                 Toast.fire({
                     icon: "success",
                     title: result.data.message
+                }).then(() => {
+                    document.getElementById('formulario_registro').reset();
+                    window.location.href = '/dashboards/index_admin'
                 });
             }
         })
@@ -264,6 +267,9 @@ function iniciar_sesion() {
                 Toast.fire({
                     icon: "success",
                     title: result.data.message
+                }).then(() => {
+                    document.getElementById('formulario_registro').reset();
+                    window.location.href = '/dashboards/index_admin'
                 });
             } else if (result.status === 401 || result.status === 402) {
                 const Toast = Swal.mixin({
