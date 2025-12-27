@@ -4,6 +4,7 @@
 <div class="container" id="container">
     <div class="form-container sign-up">
         <form method="POST">
+            @csrf
             <h1>Registrarse aquí</h1>
             <div class="social-icons">
                 <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -13,14 +14,15 @@
             <!--<span>Crea tu cuenta aquí</span>-->
             <input type="text" id="name" class="form-control" placeholder="Ingrese su nombre completo">
             <input type="email" id="email" class="form-control" placeholder="Ingrese el correo electrónico">
-            <input type="password" id="password" class="form-control" placeholder="Ingrese el correo electrónico">
-            <button type="submit">Registrarse</button>
+            <input type="password" id="password" class="form-control" placeholder="Ingrese la contraseña">
+            <button type="button" id="registrar" onclick="registrarse()">{{ __('Registrarse') }}</button>
         </form>
     </div>
 
 
     <div class="form-container sign-in">
         <form method="POST">
+            @csrf
             <h1>Iniciar sesión aquí</h1>
             <div class="social-icons">
                 <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
@@ -28,10 +30,10 @@
                 <a href="#" class="icon"><i class="fa-brands fa-x-twitter"></i></a>
             </div>
             <!--<span>Iniciar sesión aquí</span>-->
-            <input type="email" id="email" class="form-control" placeholder="Ingrese el correo electrónico">
-            <input type="password" id="password" class="form-control" placeholder="Ingrese el correo electrónico">
+            <input type="email" id="email_login" class="form-control" placeholder="Ingrese el correo electrónico">
+            <input type="password" id="password_login" class="form-control" placeholder="Ingrese la contraseña">
             <a href="#">Forget Your Password?</a>
-            <button type="submit">Iniciar sesión</button>
+            <button type="button" id="iniciarsesion" onclick="iniciar_sesion()">{{ __('Iniciar sesión') }}</button>
         </form>
     </div>
 
