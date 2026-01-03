@@ -9,6 +9,7 @@ use App\Http\Controllers\SucursalController;
 use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\EspecialistaController;
 use App\Http\Controllers\CitasController;
+use App\Http\Controllers\UsuarioController;
 
 Route::get('test', function() {
     return response()->json(['message' => 'Funciona']);
@@ -21,6 +22,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/perfil', function (Request $request) {
         return $request->user();
+    });
+
+    Route::prefix('usuarios')->group(function () {
+        Route::get('/', [UsuarioController::class, 'listar']);
+        Route::post('/', [UsuarioController::class, 'guardar']);
+        Route::put('/{id}', [UsuarioController::class, 'actualizar']);
+        Route::delete('/{id}', [UsuarioController::class, 'eliminar']);
+        Route::patch('/restaurar/{id}', [UsuarioController::class, 'restaurar']);
     });
 
     Route::prefix('migrations')->group(function () {
