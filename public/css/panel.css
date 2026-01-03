@@ -137,7 +137,7 @@ body {
 }
 /*#sidebar .side-menu.top li.active a {
 	color: var(--dark);
-	/*font-weight: 600;*/
+	/*font-weight: 600;
 }*/
 #sidebar.hide .side-menu li a {
 	width: 48px;
