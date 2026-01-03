@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('index');
 
 Route::get('/auth/auths', [AuthController::class, 'view'])->name('auth.auths');
 
