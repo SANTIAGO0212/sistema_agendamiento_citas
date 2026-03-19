@@ -1,79 +1,74 @@
-const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
+document.addEventListener("DOMContentLoaded", function(){
 
-allSideMenu.forEach(item=> {
-	const li = item.parentElement;
+const sidebar = document.getElementById("sidebar");
+const toggleBtn = document.querySelector(".toggle-sidebar");
+const overlay = document.getElementById("overlay");
 
-	item.addEventListener('click', function () {
-		allSideMenu.forEach(i=> {
-			i.parentElement.classList.remove('active');
-		})
-		li.classList.add('active');
-	})
-});
-
-
-
-
-// TOGGLE SIDEBAR
-const menuBar = document.querySelector('#content nav .bx.bx-menu');
-const sidebar = document.getElementById('sidebar');
-
-menuBar.addEventListener('click', function () {
-	sidebar.classList.toggle('hide');
-})
-
-
-
-
-
-
-
-const searchButton = document.querySelector('#content nav form .form-input button');
-const searchButtonIcon = document.querySelector('#content nav form .form-input button .bx');
-const searchForm = document.querySelector('#content nav form');
-
-searchButton.addEventListener('click', function (e) {
-	if(window.innerWidth < 576) {
-		e.preventDefault();
-		searchForm.classList.toggle('show');
-		if(searchForm.classList.contains('show')) {
-			searchButtonIcon.classList.replace('bx-search', 'bx-x');
-		} else {
-			searchButtonIcon.classList.replace('bx-x', 'bx-search');
-		}
-	}
-})
-
-
-
-
-
-if(window.innerWidth < 768) {
-	sidebar.classList.add('hide');
-} else if(window.innerWidth > 576) {
-	searchButtonIcon.classList.replace('bx-x', 'bx-search');
-	searchForm.classList.remove('show');
+/* Detectar móvil */
+function isMobile() {
+    return window.innerWidth <= 992;
 }
 
+/* Toggle Sidebar */
+toggleBtn.onclick = () => {
 
-window.addEventListener('resize', function () {
-	if(this.innerWidth > 576) {
-		searchButtonIcon.classList.replace('bx-x', 'bx-search');
-		searchForm.classList.remove('show');
-	}
-})
+    if (isMobile()) {
+        sidebar.classList.toggle("mobile-active");
+        overlay.classList.toggle("active");
+    } else {
+        sidebar.classList.toggle("collapsed");
+    }
+};
 
+/* Cerrar tocando overlay */
+overlay.onclick = () => {
+    sidebar.classList.remove("mobile-active");
+    overlay.classList.remove("active");
+};
 
+/* SUBMENU */
+document.querySelectorAll(".submenu-toggle > a").forEach(item=>{
+    item.onclick = function(e){
+        e.preventDefault();
+        this.parentElement.classList.toggle("open");
+    }
+});
 
-const switchMode = document.getElementById('switch-mode');
-const moon_light = document.getElementById('icon_moon')
+/* DARK MODE */
+const toggleTheme = document.getElementById("toggleTheme");
+const html = document.documentElement;
 
-switchMode.addEventListener('change', function () {
-	if(this.checked) {
-		document.body.classList.add('dark');
-        //moon_light.style.color = '#FFFFFF';
-	} else {
-		document.body.classList.remove('dark');
-        //moon_light.style.color = '#000000';
-	}
-})
+if(localStorage.getItem("theme")==="dark"){
+    html.setAttribute("data-theme","dark");
+}
+
+toggleTheme.onclick = ()=>{
+    let theme = html.getAttribute("data-theme")==="dark"?"light":"dark";
+    html.setAttribute("data-theme",theme);
+    localStorage.setItem("theme",theme);
+};
+
+/* CHARTS */
+new Chart(document.getElementById("salesChart"),{
+    type:"bar",
+    data:{
+        labels:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+        datasets:[
+            {label:"Ventas",data:window.salesData,backgroundColor:"#7367f0"},
+            {label:"Visitas",data:window.visitsData,backgroundColor:"#ff9f43"}
+        ]
+    }
+});
+
+new Chart(document.getElementById("donutChart"),{
+    type:"doughnut",
+    data:{
+        labels:window.trendingData.map(x=>x.name),
+        datasets:[{
+            data:window.trendingData.map(x=>x.value),
+            backgroundColor:window.trendingData.map(x=>x.color)
+        }]
+    }
+});
+
+});

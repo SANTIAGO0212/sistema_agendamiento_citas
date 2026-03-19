@@ -2,183 +2,109 @@
 
 @section('content')
 
-	<!-- CONTENT -->
-	<section id="content">
-		<!-- NAVBAR -->
-		<nav>
-			<i class='bx bx-menu' ></i>
-			<a href="#" class="nav-link"></a>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-            <i class="fa-solid fa-moon" id="icon_moon"></i>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
-			<!--<a href="#" class="notification">
-				<i class='bx bxs-bell' ></i>
-				<span class="num">8</span>
-			</a>-->
-			<a href="#" class="profile">
-				<img src="img/people.png">
-			</a>
-		</nav>
-		<!-- NAVBAR -->
+{{-- MÉTRICAS --}}
+<div class="row g-4">
 
-		<!-- MAIN -->
-		<main>
-			<div class="head-title">
-				<div class="left">
-					<h1>Dashboard</h1>
-					<ul class="breadcrumb">
-						<li>
-							<a href="#">Dashboard</a>
-						</li>
-						<li><i class='bx bx-chevron-right' ></i></li>
-						<li>
-							<a class="active" href="#">Home</a>
-						</li>
-					</ul>
-				</div>
-				<!--<a href="#" class="btn-download">
-					<i class='bx bxs-cloud-download' ></i>
-					<span class="text">Download PDF</span>
-				</a>-->
-			</div>
+@php
+$cards = [
+    ['title'=>'Pedidos totales','value'=>$metrics['orders'],'color'=>'primary','icon'=>'bx-cart'],
+    ['title'=>'Ingresos totales','value'=>'$'.number_format($metrics['revenue']),'color'=>'danger','icon'=>'bx-wallet'],
+    ['title'=>'Tasa de rebote','value'=>$metrics['bounce'].'%','color'=>'success','icon'=>'bx-trending-down'],
+    ['title'=>'Total clientes','value'=>'8.4K','color'=>'warning','icon'=>'bx-user'],
+];
+@endphp
 
-			<ul class="box-info">
-				<li>
-					<i class='bx bxs-group' ></i>
-					<span class="text">
-						<h3>1020</h3>
-						<p>Total usuarios</p>
-					</span>
-				</li>
-				<li>
-					<i class='bx bxs-calendar-check' ></i>
-					<span class="text">
-						<h3>2834</h3>
-						<p>Citas programadas</p>
-					</span>
-				</li>
+@foreach($cards as $card)
+<div class="col-md-3">
+    <div class="metric-card border-{{ $card['color'] }}">
+        <div>
+            <small>{{ $card['title'] }}</small>
+            <h4>{{ $card['value'] }}</h4>
+        </div>
+        <div class="icon-circle bg-{{ $card['color'] }}">
+            <i class='bx {{ $card['icon'] }}'></i>
+        </div>
+    </div>
+</div>
+@endforeach
+
+</div>
+
+{{-- GRÁFICOS --}}
+<div class="row mt-4">
+    <div class="col-lg-8 grafica_general">
+        <div class="card p-3">
+            <h6>Descripción general de ventas</h6>
+            <canvas id="salesChart"></canvas>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card p-3">
+            <h6>Productos de tendencia</h6>
+            <canvas id="donutChart"></canvas>
+
+            <ul class="trend-list mt-3">
+                @foreach($trending as $item)
                 <li>
-					<i class='bx bxs-calendar' ></i>
-					<span class="text">
-						<h3>2834</h3>
-						<p>Citas pendientes de confirmar</p>
-					</span>
-				</li>
-				<!--<li>
-					<i class='bx bxs-dollar-circle' ></i>
-					<span class="text">
-						<h3>$2543</h3>
-						<p>Total Sales</p>
-					</span>
-				</li>-->
-			</ul>
+                    <span>{{ $item['name'] }}</span>
+                    <span class="badge" style="background:{{ $item['color'] }}">
+                        {{ $item['value'] }}
+                    </span>
+                </li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+</div>
 
+{{-- TABLA --}}
+<div class="card mt-4 p-3">
+    <h6>Pedidos recientes</h6>
 
-			<div class="table-data">
-				<div class="order">
-					<div class="head">
-						<h3>Citas para el día de hoy</h3>
-						<i class='bx bx-search' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
-					<table>
-						<thead>
-							<tr>
-								<th>Usuario</th>
-								<th>Fecha</th>
-                                <th>Hora</th>
-                                <th>Servicio</th>
-                                <th>Sucursal</th>
-                                <th>Especialista</th>
-								<th>Estado</th>
-							</tr>
-						</thead>
-						<tbody>
-							<!--<tr>
-								<td>
-									<img src="img/people.png">
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status completed">Completed</span></td>
-							</tr>-->
-							<!--<tr>
-								<td>
-									<img src="img/people.png">
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>-->
-							<tr>
-								<td>
-									<img src="img/people.png">
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-                                <td>23:10</td>
-                                <td>Spa</td>
-                                <td>CO</td>
-                                <td>Alex</td>
-								<td><span class="status process">Process</span></td>
-							</tr>
-							<!--<tr>
-								<td>
-									<img src="img/people.png">
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status pending">Pending</span></td>
-							</tr>-->
-							<!--<tr>
-								<td>
-									<img src="img/people.png">
-									<p>John Doe</p>
-								</td>
-								<td>01-10-2021</td>
-								<td><span class="status completed">Completed</span></td>
-							</tr>-->
-						</tbody>
-					</table>
-				</div>
-				<!--<div class="todo">
-					<div class="head">
-						<h3>Todos</h3>
-						<i class='bx bx-plus' ></i>
-						<i class='bx bx-filter' ></i>
-					</div>
-					<ul class="todo-list">
-						<li class="completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-						<li class="completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-						<li class="not-completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-						<li class="completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-						<li class="not-completed">
-							<p>Todo List</p>
-							<i class='bx bx-dots-vertical-rounded' ></i>
-						</li>
-					</ul>
-				</div>
-			</div>-->
-		</main>
-		<!-- MAIN -->
-	</section>
-	<!-- CONTENT -->
+    <table class="table align-middle">
+        <thead>
+        <tr>
+            <th>Producto</th>
+            <th>ID</th>
+            <th>Estado</th>
+            <th>Cantidad</th>
+            <th>Fecha</th>
+            <th>Envío</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($orders as $order)
+        <tr>
+            <td>{{ $order['product'] }}</td>
+            <td>{{ $order['id'] }}</td>
+            <td>
+                <span class="badge 
+                @if($order['status']=='Pagado') bg-success
+                @elseif($order['status']=='Pendiente') bg-warning
+                @else bg-danger @endif">
+                {{ $order['status'] }}
+                </span>
+            </td>
+            <td>${{ $order['amount'] }}</td>
+            <td>{{ $order['date'] }}</td>
+            <td>
+                <div class="progress" style="height:6px;">
+                    <div class="progress-bar bg-success" 
+                        style="width:{{ $order['progress'] }}%">
+                    </div>
+                </div>
+            </td>
+        </tr>
+        @endforeach
+        </tbody>
+    </table>
+</div>
+
+<script>
+window.salesData = @json($sales);
+window.visitsData = @json($visits);
+window.trendingData = @json($trending);
+</script>
+
 @endsection
