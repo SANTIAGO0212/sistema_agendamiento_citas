@@ -20,8 +20,8 @@ class UsuarioController extends Controller
      * Función para mostrar la vista en la página web.
     */
     public function view() {
-        $usuarui = User::all();
-        return view('modulos.usuario', compact('usuario'));
+        $usuarios = User::all();
+        return view('modulos.usuario', compact('usuarios'));
     }
 
     /**

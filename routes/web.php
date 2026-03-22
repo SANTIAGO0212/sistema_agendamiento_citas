@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UsuarioController;
 
 Route::get('/', function () {
     return view('index');
@@ -18,5 +19,14 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/dashboards/index_admin', [DashboardController::class, 'index'])->name('dashboards.index_admin');
+
+    Route::prefix('usuarios')->group(function () {
+        Route::get('/modulos/usuario', [UsuarioController::class, 'view'])->name('modulos.usuario');
+        Route::get('/', [UsuarioController::class, 'listar']);
+        Route::post('/', [UsuarioController::class, 'guardar']);
+        Route::put('/{id}', [UsuarioController::class, 'actualizar']);
+        Route::delete('/{id}', [UsuarioController::class, 'eliminar']);
+        Route::patch('/restaurar/{id}', [UsuarioController::class, 'restaurar']);
+    });
 
 });

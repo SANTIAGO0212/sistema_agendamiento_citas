@@ -28,10 +28,11 @@ overlay.onclick = () => {
 
 /* SUBMENU */
 document.querySelectorAll(".submenu-toggle > a").forEach(item=>{
-    item.onclick = function(e){
-        e.preventDefault();
-        this.parentElement.classList.toggle("open");
-    }
+    item.addEventListener('click', function(e) {
+        if (this.getAttribute('href') === '#') {
+            e.preventDefault();
+        }
+    });
 });
 
 /* DARK MODE */
