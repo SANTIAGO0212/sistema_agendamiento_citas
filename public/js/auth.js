@@ -16,6 +16,7 @@ function registrarse() {
     const nombre = document.getElementById('name');
     const correo = document.getElementById('email');
     const contrasena = document.getElementById('password');
+    const estado = document.getElementById('estado');
     const token = document.querySelector('meta[name="csrf-token"]')?.content;
 
     if (!token) {
@@ -114,7 +115,8 @@ function registrarse() {
         body: JSON.stringify({
             name: nombre.value.trim(),
             email: correo.value.trim(),
-            password: contrasena.value.trim()
+            password: contrasena.value.trim(),
+            estado: estado.value
         })
     })
         .then(response => {
@@ -284,7 +286,7 @@ function iniciar_sesion() {
                     }
                 });
                 Toast.fire({
-                    icon: "error",
+                    icon: "warning",
                     title: result.data.message
                 });
             }
