@@ -313,13 +313,13 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function actualizar() {
-    
-const primer_nombre = document.getElementById('primer_nombre_actualizar');
-const segundo_nombre = document.getElementById('segundo_nombre_actualizar');
-const primer_apellido = document.getElementById('primer_apellido_actualizar');
-const segundo_apellido = document.getElementById('segundo_apellido_actualizar');
-const correo = document.getElementById('email_actualizar');
-const contrasena = document.getElementById('password_actualizar');
+
+    const primer_nombre = document.getElementById('primer_nombre_actualizar');
+    const segundo_nombre = document.getElementById('segundo_nombre_actualizar');
+    const primer_apellido = document.getElementById('primer_apellido_actualizar');
+    const segundo_apellido = document.getElementById('segundo_apellido_actualizar');
+    const correo = document.getElementById('email_actualizar');
+    const contrasena = document.getElementById('password_actualizar');
 
 
     if (!token) {
@@ -361,7 +361,7 @@ const contrasena = document.getElementById('password_actualizar');
         body: JSON.stringify({
             name: nombre_completo.trim(),
             email: correo.value.trim(),
-            password: contrasena.value ? contrasena.value.trim() : "12345678"
+            //password: contrasena.value ? contrasena.value.trim() : "12345678"
         })
     })
         .then(response => {
@@ -397,11 +397,11 @@ const contrasena = document.getElementById('password_actualizar');
                         const modal_editar = bootstrap.Modal.getInstance(modalElementActualizar);
                         modal_editar.hide();
                         //const tabla = document.getElementById('tabla_usuarios');
-                        const fila = document.querySelector(`tr[data-id="${id}"]`);
+                        const fila = document.getElementById(`fila_usuario_${id}`);
 
                         if (fila) {
-                            fila.children[1].textContent = nombre_completo; // Nombre completo
-                            fila.children[2].textContent = correo.value;    // Email
+                            fila.children[1].textContent = nombre_completo.trim();
+                            fila.children[2].textContent = correo.value.trim();
                         }
                     }
                 });
@@ -409,5 +409,57 @@ const contrasena = document.getElementById('password_actualizar');
         })
 }
 
+function eliminar_usuario(elemento) {
+    const id_eliminar = elemento.dataset.id;
 
+    if (!token) {
+        console.error('Token CSRF no encontrado');
+        alert('Error de seguridad. Por favor, recarga la página.');
+        return;
+    }
 
+    //alert(result.data.message || 'Registro exitos');
+    Swal.fire({
+        icon: "question",
+        title: "¿Está seguro de que deseas eliminar el usuario?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Si, eliminar.",
+        denyButtonText: `Cancelar`
+    }).then((responseSwal) => {
+        if (responseSwal.isConfirmed) {
+            fetch(`/usuarios/${id_eliminar}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => {
+                    console.log('Respuesta recibida', response.status);
+                    return response.json().then(data => {
+                        return {
+                            status: response.status,
+                            data: data
+                        };
+                    });
+                })
+                .then(result => {
+
+                    if (result.status === 200) {
+
+                        Swal.fire({
+                            title: result.data.message,
+                            icon: "success",
+                        });
+
+                        const fila = document.getElementById(`fila_usuario_${id_eliminar}`);
+                        if (fila) fila.remove();
+                    }
+
+                })
+        }
+    });
+    console.log("ID", id_eliminar);
+}

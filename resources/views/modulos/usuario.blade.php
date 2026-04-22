@@ -22,14 +22,14 @@
         </thead>
         <tbody id="tabla_usuarios">
             @foreach($usuarios as $usuario)
-            <tr>
+            <tr id="fila_usuario_{{ $usuario['id'] }}">
                 <td>{{ $usuario['id'] }}</td>
                 <td>{{ $usuario['name'] }}</td>
                 <td>{{ $usuario['email'] }}</td>
                 <td>
                     <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-password="{{ $usuario['password'] }}"><i class="bx bx-show"></i></a>
                     <a style="color: purple; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalActualizar" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-password="{{ $usuario['password'] }}"><i class="bx bx-edit"></i></a>
-                    <a style="color: red; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="bx bx-trash"></i></a>
+                    <a style="color: red; cursor: pointer;" data-id="{{ $usuario['id'] }}" onclick="eliminar_usuario(this)"><i class="bx bx-trash"></i></a>
                 </td>
             </tr>
             @endforeach
@@ -189,11 +189,6 @@
                         <div class="col-md-6">
                             <label for="email_label mb-2">Correo electrónico <span style="color:red;">*</span> </label>
                             <input type="email" id="email_actualizar" name="email_actualizar" class="form-control" required>
-                        </div>
-
-                        <div class="col-md-4">
-                            <label for="password_label mb-2">Contraseña <span style="color:red;">*</span> </label>
-                            <input type="password" id="password_actualizar" name="password_actualizar" class="form-control" required>
                         </div>
                     </div>
                 </form>
