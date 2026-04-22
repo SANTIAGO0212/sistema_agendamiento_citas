@@ -8,7 +8,7 @@
         <h6 class="mb-0">Usuarios</h6>
         <div>
             <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar</button>
-            <button type="button" class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Restaurar</button>
+            <button type="button" class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#exampleModalRestaurar">Restaurar</button>
         </div>
     </div>
     <table class="table align-middle">
@@ -196,6 +196,46 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i> Cancelar</button>
                 <button type="button" id="btn_save" name="btn_save" class="btn btn-primary" onclick="actualizar()"><i class="bx bx-save"></i> Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{-- Modal Restaurar  --}}
+<div class="modal fade" id="exampleModalRestaurar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Restaurar usuarios</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre completo</th>
+                            <th>Email</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla_usuarios">
+                        @foreach($usuarios as $usuario)
+                        <tr id="fila_usuario_{{ $usuario['id'] }}">
+                            <td>{{ $usuario['id'] }}</td>
+                            <td>{{ $usuario['name'] }}</td>
+                            <td>{{ $usuario['email'] }}</td>
+                            <td>
+                                <a style="color: green; cursor: pointer; justify-content: center;" data-id="{{ $usuario['id'] }}" onclick="eliminar_usuario(this)"><i class="bx bx-refresh"></i></a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i> Cancelar</button>
             </div>
         </div>
     </div>
