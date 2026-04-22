@@ -14,19 +14,23 @@
     <table class="table align-middle">
         <thead>
             <tr>
-                <th>#</th>
+                <!--<th>#</th>-->
                 <th>Nombre completo</th>
                 <th>Email</th>
-                <th>Acciones</th>
+                <th class="text-center align-middle">Estado</th>
+                <th class="text-center align-middle">Acciones</th>
             </tr>
         </thead>
         <tbody id="tabla_usuarios">
             @foreach($usuarios as $usuario)
             <tr id="fila_usuario_{{ $usuario['id'] }}">
-                <td>{{ $usuario['id'] }}</td>
+                <!--<td>{{ $usuario['id'] }}</td>-->
                 <td>{{ $usuario['name'] }}</td>
                 <td>{{ $usuario['email'] }}</td>
-                <td>
+                @if ($usuario['estado'] === 1 )
+                <td class="text-center align-middle"><i class="bx bx-check-circle" style="color:green;"></i></td>
+                @endif
+                <td class="text-center align-middle">
                     <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-password="{{ $usuario['password'] }}"><i class="bx bx-show"></i></a>
                     <a style="color: purple; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalActualizar" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-password="{{ $usuario['password'] }}"><i class="bx bx-edit"></i></a>
                     <a style="color: red; cursor: pointer;" data-id="{{ $usuario['id'] }}" onclick="eliminar_usuario(this)"><i class="bx bx-trash"></i></a>
@@ -213,20 +217,23 @@
                 <table class="table align-middle">
                     <thead>
                         <tr>
-                            <th>#</th>
                             <th>Nombre completo</th>
                             <th>Email</th>
-                            <th>Acciones</th>
+                            <th class="text-center align-middle">Estado</th>
+                            <th class="text-center align-middle">Acciones</th>
                         </tr>
                     </thead>
                     <tbody id="tabla_usuarios">
-                        @foreach($usuarios as $usuario)
-                        <tr id="fila_usuario_{{ $usuario['id'] }}">
-                            <td>{{ $usuario['id'] }}</td>
-                            <td>{{ $usuario['name'] }}</td>
-                            <td>{{ $usuario['email'] }}</td>
-                            <td>
-                                <a style="color: green; cursor: pointer; justify-content: center;" data-id="{{ $usuario['id'] }}" onclick="eliminar_usuario(this)"><i class="bx bx-refresh"></i></a>
+                        @foreach($usuarios_inactivos as $usuario_inactivo)
+                        <tr id="fila_usuario_{{ $usuario_inactivo['id'] }}">
+                            <!--<td>{{ $usuario_inactivo['id'] }}</td>-->
+                            <td>{{ $usuario_inactivo['name'] }}</td>
+                            <td>{{ $usuario_inactivo['email'] }}</td>
+                            @if ($usuario_inactivo['estado'] === 0 )
+                            <td class="text-center align-middle"><i class="bx bx-x-circle" style="color:red;"></i></td>
+                            @endif
+                            <td class="text-center align-middle">
+                                <a style="color: gold; cursor: pointer;align-items: center;" data-id="{{ $usuario['id'] }}" onclick="eliminar_usuario(this)"><i class="bx bx-refresh"></i></a>
                             </td>
                         </tr>
                         @endforeach

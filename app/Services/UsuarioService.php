@@ -31,8 +31,7 @@ class UsuarioService
 
         // Si hay filtro, aplica búsqueda
         if (!empty($buscar)) {
-            $query->where('name', 'LIKE', "%{$buscar}%")
-                ->orWhere('direccion', 'LIKE', "%{$buscar}%");
+            $query->where('name', 'LIKE', "%{$buscar}%");
         }
 
         // Si el parámetro de paginación es verdadero
@@ -80,7 +79,11 @@ class UsuarioService
     public function eliminar(int $id)
     {
         $user = User::findOrFail($id);
-        return $user->delete();
+        $user->estado = 0;
+        $user->save();
+        //$user->delete();
+
+        return true;
     }
 
     /**
