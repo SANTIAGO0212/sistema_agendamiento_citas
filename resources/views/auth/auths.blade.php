@@ -15,6 +15,7 @@
             <input type="text" id="name" class="form-control" placeholder="Ingrese su nombre completo">
             <input type="email" id="email" class="form-control" placeholder="Ingrese el correo electrónico">
             <input type="password" id="password" class="form-control" placeholder="Ingrese la contraseña">
+            <input type="hidden" id="estado" class="form-control" value="1">
             <button type="button" id="registrar" onclick="registrarse()">{{ __('Registrarse') }}</button>
         </form>
     </div>

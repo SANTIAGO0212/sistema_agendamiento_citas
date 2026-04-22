@@ -19,7 +19,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|max:12'
+            'password' => 'required|string|max:12',
         ]);
 
         $user = User::create([
@@ -45,6 +45,12 @@ class AuthController extends Controller
         if(!$user || !Hash::check($request->password, $user->password)){
             return response()->json(['message' => 'Credenciales inválidas'], 401);
         } // Se validan las credeniales ingresadas y al ser inválidas marca error status 401 en la respuesta del JSON
+
+        if($user->estado === 0) {
+            return response()->json([
+                'message' => 'La cuenta se encuentra inactiva. Comuníquese directamente con el administrador.'
+            ],402);
+        }
 
         $token = $user->createToken('api_token')->plainTextToken; //general el token de acceso
 
