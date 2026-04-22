@@ -24,7 +24,8 @@ class UpdateUsuarioRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'string|email|unique:users,email,' . $this->route('id'),
-            'password' => 'string|max:12'
+            'password' => 'string|max:12',
+            'estado' => 'boolean'
         ];
     }
 }

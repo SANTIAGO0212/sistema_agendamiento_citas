@@ -24,7 +24,8 @@ class UsuarioRequest extends FormRequest
         return [
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|max:12'
+            'password' => 'required|string|max:12',
+            'estado' => 'boolean'
         ];
     }
 }
