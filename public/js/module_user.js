@@ -111,10 +111,41 @@ function guardar() {
                         const modal = bootstrap.Modal.getInstance(modalElement);
                         modal.hide();
                         const tabla = document.getElementById('tabla_usuarios');
-                        const nuevaFila = `<tr>
-                            <td>${nombre_completo}</td>
-                            <td>${email_guardado}</td>
-                        </tr>`;
+                        const nuevaFila = `
+                            <tr id="fila_usuario_${result.data.id ?? ''}">
+                                <td>${nombre_completo}</td>
+                                <td>${email_guardado}</td>
+
+                                <td class="text-center align-middle">
+                                    <i class="bx bx-check-circle" style="color:green;"></i>
+                                </td>
+
+                                <td class="text-center align-middle">
+                                    <a style="color: orange; cursor: pointer;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#exampleModalVer"
+                                        data-id="${result.data.id ?? ''}"
+                                        data-nombre="${nombre_completo}"
+                                        data-email="${email_guardado}">
+                                        <i class="bx bx-show"></i>
+                                    </a>
+
+                                    <a style="color: purple; cursor: pointer;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#exampleModalActualizar"
+                                        data-id="${result.data.id ?? ''}"
+                                        data-nombre="${nombre_completo}"
+                                        data-email="${email_guardado}">
+                                        <i class="bx bx-edit"></i>
+                                    </a>
+
+                                    <a style="color: red; cursor: pointer;"
+                                        data-id="${result.data.id ?? ''}"
+                                        onclick="eliminar_usuario(this)">
+                                        <i class="bx bx-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>`;
                         tabla.insertAdjacentHTML('beforeend', nuevaFila);
                     }
                 });
@@ -197,10 +228,41 @@ function guardar_crear() {
                         /*const modal = bootstrap.Modal.getInstance(modalElement);
                         modal.hide();*/
                         const tabla = document.getElementById('tabla_usuarios');
-                        const nuevaFila = `<tr>
-                            <td>${nombre_completo}</td>
-                            <td>${email_guardado}</td>
-                        </tr>`;
+                        const nuevaFila = `
+                            <tr id="fila_usuario_${result.data.id ?? ''}">
+                                <td>${nombre_completo}</td>
+                                <td>${email_guardado}</td>
+
+                                <td class="text-center align-middle">
+                                    <i class="bx bx-check-circle" style="color:green;"></i>
+                                </td>
+
+                                <td class="text-center align-middle">
+                                    <a style="color: orange; cursor: pointer;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#exampleModalVer"
+                                        data-id="${result.data.id ?? ''}"
+                                        data-nombre="${nombre_completo}"
+                                        data-email="${email_guardado}">
+                                        <i class="bx bx-show"></i>
+                                    </a>
+
+                                    <a style="color: purple; cursor: pointer;"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#exampleModalActualizar"
+                                        data-id="${result.data.id ?? ''}"
+                                        data-nombre="${nombre_completo}"
+                                        data-email="${email_guardado}">
+                                        <i class="bx bx-edit"></i>
+                                    </a>
+
+                                    <a style="color: red; cursor: pointer;"
+                                        data-id="${result.data.id ?? ''}"
+                                        onclick="eliminar_usuario(this)">
+                                        <i class="bx bx-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>`;
                         tabla.insertAdjacentHTML('beforeend', nuevaFila);
                     } else {
                         return;
@@ -223,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const id = button.getAttribute('data-id');
         const nombre = button.getAttribute('data-nombre');
         const email = button.getAttribute('data-email');
-        const password = button.getAttribute('data-password');
+        let estado = button.getAttribute('data-estado');
 
         // Separar nombre (opcional si lo tienes concatenado)
         let nombres = nombre.trim().split(' ');
@@ -232,6 +294,8 @@ document.addEventListener('DOMContentLoaded', function () {
         let segundo_nombre_ver = '';
         let primer_apellido_ver = '';
         let segundo_apellido_ver = '';
+        let estado_activo_ver = 'Activo';
+        let estado_inactivo_ver = 'Inactivo';
 
         if (nombres.length === 2) {
             primer_nombre_ver = nombres[0];
@@ -251,13 +315,19 @@ document.addEventListener('DOMContentLoaded', function () {
             segundo_apellido_ver = nombres.slice(3).join(' ');
         }
 
+        if(estado == 1) {
+            estado = estado_activo_ver;
+        }else if(estado == 0) {
+            estado = estado_inactivo_ver;
+        }
+
         document.getElementById('id_user_ver').value = id;
         document.getElementById('primer_nombre_ver').value = primer_nombre_ver || 'N/A';
         document.getElementById('segundo_nombre_ver').value = segundo_nombre_ver || 'N/A';
         document.getElementById('primer_apellido_ver').value = primer_apellido_ver || 'N/A';
         document.getElementById('segundo_apellido_ver').value = segundo_apellido_ver || 'N/A';
         document.getElementById('email_ver').value = email;
-        document.getElementById('password_ver').value = password;
+        document.getElementById('estado_ver').value = estado;
     });
 });
 
@@ -274,7 +344,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const id = button.getAttribute('data-id');
         const nombre = button.getAttribute('data-nombre');
         const email = button.getAttribute('data-email');
-        const password = button.getAttribute('data-password');
+        const estado = button.getAttribute('data-estado');
 
         // Separar nombre (opcional si lo tienes concatenado)
         let nombres = nombre.trim().split(' ');
@@ -283,6 +353,8 @@ document.addEventListener('DOMContentLoaded', function () {
         let segundo_nombre = '';
         let primer_apellido = '';
         let segundo_apellido = '';
+        let estado_activo = 'Activo';
+        let estado_inactivo = 'Inactivo';
 
         if (nombres.length === 2) {
             primer_nombre = nombres[0];
@@ -302,13 +374,19 @@ document.addEventListener('DOMContentLoaded', function () {
             segundo_apellido = nombres.slice(3).join(' ');
         }
 
+        if(estado === 1) {
+            estado = estado_activo;
+        }else if (estado === 0) {
+            estado = estado_inactivo;
+        }
+
         document.getElementById('id_user_actualizar').value = id;
         document.getElementById('primer_nombre_actualizar').value = primer_nombre || '';
         document.getElementById('segundo_nombre_actualizar').value = segundo_nombre || '';
         document.getElementById('primer_apellido_actualizar').value = primer_apellido || '';
         document.getElementById('segundo_apellido_actualizar').value = segundo_apellido || '';
         document.getElementById('email_actualizar').value = email;
-        document.getElementById('password_actualizar').value = password;
+        document.getElementById('estado_actualizar').value = estado_activo;
     });
 });
 
@@ -400,8 +478,22 @@ function actualizar() {
                         const fila = document.getElementById(`fila_usuario_${id}`);
 
                         if (fila) {
-                            fila.children[1].textContent = nombre_completo.trim();
-                            fila.children[2].textContent = correo.value.trim();
+                            fila.children[0].textContent = nombre_completo.trim();
+                            fila.children[1].textContent = correo.value.trim();
+                        }
+
+                        const btnEditar = fila.querySelector('[data-bs-target="#exampleModalActualizar"]');
+
+                        if (btnEditar) {
+                            btnEditar.setAttribute('data-nombre', nombre_completo.trim());
+                            btnEditar.setAttribute('data-email', correo.value.trim());
+                        }
+
+                        const btnVer = fila.querySelector('[data-bs-target="#exampleModalVer"]');
+
+                        if (btnVer) {
+                            btnVer.setAttribute('data-nombre', nombre_completo.trim());
+                            btnVer.setAttribute('data-email', correo.value.trim());
                         }
                     }
                 });
@@ -456,10 +548,122 @@ function eliminar_usuario(elemento) {
 
                         const fila = document.getElementById(`fila_usuario_${id_eliminar}`);
                         if (fila) fila.remove();
+
+                        const tabla = document.getElementById('tabla_usuarios_inactivos');
+                        const nuevaFila = `
+                            <tr id="fila_usuario_inactivo_${result.data.id ?? ''}">
+                                <td>${result.data.name}</td>
+                                <td>${result.data.email}</td>
+
+                                <td class="text-center align-middle">
+                                    <i class="bx bx-x-circle" style="color:red;"></i>
+                                </td>
+
+                                <td class="text-center align-middle">
+                                   <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="${result.data.id}" data-nombre="${result.data.name}" data-email="${result.data.email}" data-estado="0"><i class="bx bx-show"></i></a>
+                                   <a style="color: gold; cursor: pointer;align-items: center;" data-id="${result.data.id}" onclick="restaurar_usuario(this)"><i class="bx bx-refresh"></i></a>
+                                </td>
+                            </tr>`;
+                        tabla.insertAdjacentHTML('beforeend', nuevaFila);
                     }
 
                 })
         }
     });
     console.log("ID", id_eliminar);
+}
+
+function restaurar_usuario(element) {
+    const id_restaurar = element.dataset.id;
+
+    if (!token) {
+        console.error('Token CSRF no encontrado');
+        alert('Error de seguridad. Por favor, recarga la página.');
+        return;
+    }
+
+    //alert(result.data.message || 'Registro exitos');
+    Swal.fire({
+        icon: "question",
+        title: "¿Está seguro de que deseas restaurar el usuario?",
+        showDenyButton: true,
+        showCancelButton: false,
+        confirmButtonText: "Si, restaurar.",
+        denyButtonText: `Cancelar`
+    }).then((responseSwal) => {
+        if (responseSwal.isConfirmed) {
+            fetch(`/usuarios/restaurar/${id_restaurar}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json'
+                }
+            })
+                .then(response => {
+                    console.log('Respuesta recibida', response.status);
+                    return response.json().then(data => {
+                        return {
+                            status: response.status,
+                            data: data
+                        };
+                    });
+                })
+                .then(result => {
+
+                    if (result.status === 200) {
+
+                        Swal.fire({
+                            title: result.data.message,
+                            icon: "success",
+                        });
+
+                        const fila = document.getElementById(`fila_usuario_inactivo_${id_restaurar}`);
+                        if (fila) fila.remove();
+
+                        const tabla = document.getElementById('tabla_usuarios');
+                        const nuevaFila = `
+                            <tr id="fila_usuario_${result.data.id ?? ''}">
+                                <td>${result.data.name}</td>
+                                <td>${result.data.email}</td>
+
+                                <td class="text-center align-middle">
+                                    <i class="bx bx-check-circle" style="color:green;"></i>
+                                </td>
+
+                            <td class="text-center align-middle">
+                                <a style="color: orange; cursor: pointer;"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModalVer"
+                                    data-id="${result.data.id}"
+                                    data-nombre="${result.data.name}"
+                                    data-email="${result.data.email}"
+                                    data-estado="1">
+                                    <i class="bx bx-show"></i>
+                                </a>
+
+                                <a style="color: purple; cursor: pointer;"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#exampleModalActualizar"
+                                    data-id="${result.data.id}"
+                                    data-nombre="${result.data.name}"
+                                    data-email="${result.data.email}"
+                                    data-estado="{{ ${result.data.estado} }}">
+                                    <i class="bx bx-edit"></i>
+                                </a>
+
+                                <a style="color: red; cursor: pointer;"
+                                    data-id="${result.data.id}"
+                                    onclick="eliminar_usuario(this)">
+                                    <i class="bx bx-trash"></i>
+                                </a>
+                            </td>
+                                </td>
+                            </tr>`;
+                        tabla.insertAdjacentHTML('beforeend', nuevaFila);
+                    }
+                })
+        }
+    });
+    console.log("ID", id_restaurar);
 }

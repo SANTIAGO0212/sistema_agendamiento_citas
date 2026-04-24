@@ -59,7 +59,8 @@ class UsuarioController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'El usuario fue agregado correctamente.',
-                'usuarios' => $usuarios
+                'usuarios' => $usuarios,
+                'id' => $usuarios->id
             ], status: 201);
         } catch (\Exception $e) {
             return response()->json([
@@ -95,10 +96,14 @@ class UsuarioController extends Controller
     public function eliminar(int $id)
     {
         try {
-            $this->usuarioService->eliminar($id);
+            $usuario = $this->usuarioService->eliminar($id);
             return response()->json([
                 'status' => 'success',
                 'message' => 'El usuario se ha eliminado correctamente',
+                'id' => $usuario['id'],
+                'name' => $usuario['name'],
+                'email' => $usuario['email'],
+                'estado' => $usuario['estado']
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -114,10 +119,14 @@ class UsuarioController extends Controller
     public function restaurar(int $id)
     {
         try {
-            $this->usuarioService->restaurar($id);
+            $usuario = $this->usuarioService->restaurar($id);
             return response()->json([
                 'status' => 'success',
                 'message' => 'El usuario fue restaurado correctamente',
+                'id' => $usuario['id'],
+                'name' => $usuario['name'],
+                'email' => $usuario['email'],
+                'estado' => $usuario['estado']
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
