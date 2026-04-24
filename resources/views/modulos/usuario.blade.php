@@ -31,8 +31,8 @@
                 <td class="text-center align-middle"><i class="bx bx-check-circle" style="color:green;"></i></td>
                 @endif
                 <td class="text-center align-middle">
-                    <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-password="{{ $usuario['password'] }}"><i class="bx bx-show"></i></a>
-                    <a style="color: purple; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalActualizar" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-password="{{ $usuario['password'] }}"><i class="bx bx-edit"></i></a>
+                    <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-estado="{{ $usuario['estado'] }}"><i class="bx bx-show"></i></a>
+                    <a style="color: purple; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalActualizar" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-estado="{{ $usuario['estado'] }}"><i class="bx bx-edit"></i></a>
                     <a style="color: red; cursor: pointer;" data-id="{{ $usuario['id'] }}" onclick="eliminar_usuario(this)"><i class="bx bx-trash"></i></a>
                 </td>
             </tr>
@@ -139,14 +139,15 @@
                             <input type="email" id="email_ver" name="email_ver" class="form-control" disabled>
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="password_label mb-2">Contraseña</label>
-                            <input type="password" id="password_ver" name="password_ver" class="form-control" disabled>
+                        <div class="col-md-2">
+                            <label for="estado_label mb-2">Estado</label>
+                            <input type="text" id="estado_ver" name="estado_ver" class="form-control" disabled>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
+                <!--<button type="button" class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#exampleModalRestaurar"><i class="bx bx-arrow-from-right fs-2"></i> Regresar</button>-->
                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i> Cancelar</button>
             </div>
         </div>
@@ -194,6 +195,11 @@
                             <label for="email_label mb-2">Correo electrónico <span style="color:red;">*</span> </label>
                             <input type="email" id="email_actualizar" name="email_actualizar" class="form-control" required>
                         </div>
+
+                        <div class="col-md-2" hidden>
+                            <label for="estado_label mb-2">Estado</label>
+                            <input type="text" id="estado_actualizar" name="estado_actualizar" class="form-control" disabled>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -223,9 +229,9 @@
                             <th class="text-center align-middle">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tabla_usuarios">
+                    <tbody id="tabla_usuarios_inactivos">
                         @foreach($usuarios_inactivos as $usuario_inactivo)
-                        <tr id="fila_usuario_{{ $usuario_inactivo['id'] }}">
+                        <tr id="fila_usuario_inactivo_{{ $usuario_inactivo['id'] }}">
                             <!--<td>{{ $usuario_inactivo['id'] }}</td>-->
                             <td>{{ $usuario_inactivo['name'] }}</td>
                             <td>{{ $usuario_inactivo['email'] }}</td>
@@ -233,7 +239,8 @@
                             <td class="text-center align-middle"><i class="bx bx-x-circle" style="color:red;"></i></td>
                             @endif
                             <td class="text-center align-middle">
-                                <a style="color: gold; cursor: pointer;align-items: center;" data-id="{{ $usuario['id'] }}" onclick="eliminar_usuario(this)"><i class="bx bx-refresh"></i></a>
+                                <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="{{ $usuario_inactivo['id'] }}" data-nombre="{{ $usuario_inactivo['name'] }}" data-email="{{ $usuario_inactivo['email'] }}" data-estado="{{ $usuario_inactivo['estado'] }}"><i class="bx bx-show"></i></a>
+                                <a style="color: gold; cursor: pointer;align-items: center;" data-id="{{ $usuario_inactivo['id'] }}" onclick="restaurar_usuario(this)"><i class="bx bx-refresh"></i></a>
                             </td>
                         </tr>
                         @endforeach

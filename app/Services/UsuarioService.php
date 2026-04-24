@@ -79,11 +79,19 @@ class UsuarioService
     public function eliminar(int $id)
     {
         $user = User::findOrFail($id);
+
+        $data = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'estado' => $user->estado
+        ];
+
         $user->estado = 0;
         $user->save();
         //$user->delete();
 
-        return true;
+        return $data;
     }
 
     /**
@@ -94,7 +102,19 @@ class UsuarioService
      */
     public function restaurar(int $id)
     {
-        $user = User::onlyTrashed()->findOrFail($id);
-        return $user->restore();
+        $user = User::findOrFail($id);
+
+        $data = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'estado' => $user->estado
+        ];
+
+        $user->estado = 1;
+        $user->save();
+        //$user->delete();
+
+        return $data;
     }
 }
