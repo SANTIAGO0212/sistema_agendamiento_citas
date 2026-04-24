@@ -25,7 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::prefix('usuarios')->group(function () {
-        Route::get('/', [UsuarioController::class, 'listar']);
+        Route::get('/activo', [UsuarioController::class, 'listar_activo']);
+        Route::get('/inactivo', [UsuarioController::class, 'listar_inactivo']);
         Route::post('/', [UsuarioController::class, 'guardar']);
         Route::put('/{id}', [UsuarioController::class, 'actualizar']);
         Route::delete('/{id}', [UsuarioController::class, 'eliminar']);

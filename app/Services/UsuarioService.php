@@ -25,9 +25,27 @@ class UsuarioService
      * @param int $porPagina
      */
 
-    public function listar(?string $buscar = null, int $porPagina = 10)
+    public function listar_activo(?string $buscar = null, int $porPagina = 10)
     {
-        $query = User::query();
+        $query = User::where('estado', 1);
+
+        // Si hay filtro, aplica búsqueda
+        if (!empty($buscar)) {
+            $query->where('name', 'LIKE', "%{$buscar}%");
+        }
+
+        // Si el parámetro de paginación es verdadero
+        if ($porPagina) {
+            return $query->paginate($porPagina);
+        }
+
+        // Si no se requiere paginación
+        return $query->get();
+    }
+
+    public function listar_inactivo(?string $buscar = null, int $porPagina = 10)
+    {
+        $query = User::where('estado', 0);
 
         // Si hay filtro, aplica búsqueda
         if (!empty($buscar)) {

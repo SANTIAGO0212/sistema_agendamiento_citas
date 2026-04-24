@@ -11,6 +11,7 @@ const modalElement = document.getElementById('exampleModal');
 const modalElementActualizar = document.getElementById('exampleModalActualizar');
 const modal_ver = document.getElementById('exampleModalVer');
 let hayErrores = false;
+let pagina_actual = 1;
 const token = document.querySelector('meta[name="csrf-token"]')?.content;
 
 function marcarError(input, mensaje) {
@@ -666,4 +667,144 @@ function restaurar_usuario(element) {
         }
     });
     console.log("ID", id_restaurar);
+}
+
+
+// PROCESO PARA EL LISTAR Y LA PAGINACIÓN
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    renderPaginacion(paginadorInicial);
+
+    // 🔹 Eventos
+    document.getElementById('input_buscar').addEventListener('keyup', function () {
+        pagina_actual = 1;
+        listarUsuarios();
+    });
+
+    document.getElementById('select_por_pagina').addEventListener('change', function () {
+        pagina_actual = 1;
+        listarUsuarios();
+    });
+
+});
+
+function listarUsuarios(page = 1) {
+
+    pagina_actual = page;
+
+    const buscar = document.getElementById('input_buscar').value;
+    const porPagina = document.getElementById('select_por_pagina').value;
+
+    fetch(`/usuarios/activo?buscar=${buscar}&porPagina=${porPagina}&page=${page}`)
+        .then(response => response.json())
+        .then(result => {
+
+            if (result.status === 'success') {
+
+                renderTabla(result.usuarios.data);
+                renderPaginacion(result.usuarios);
+
+            } else {
+                console.error(result);
+            }
+
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function renderTabla(usuarios) {
+
+    const tabla = document.getElementById('tabla_usuarios');
+    tabla.innerHTML = '';
+
+    usuarios.forEach(usuario => {
+
+        let estadoIcono = usuario.estado == 1
+            ? '<i class="bx bx-check-circle" style="color:green;"></i>'
+            : '<i class="bx bx-x-circle" style="color:red;"></i>';
+
+        tabla.innerHTML += `
+            <tr id="fila_usuario_${usuario.id}">
+                <td>${usuario.name}</td>
+                <td>${usuario.email}</td>
+
+                <td class="text-center align-middle">
+                    ${estadoIcono}
+                </td>
+
+                <td class="text-center align-middle">
+
+                    <a style="color: orange; cursor: pointer;"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModalVer"
+                        data-id="${usuario.id}"
+                        data-nombre="${usuario.name}"
+                        data-email="${usuario.email}"
+                        data-estado="${usuario.estado}">
+                        <i class="bx bx-show"></i>
+                    </a>
+
+                    <a style="color: purple; cursor: pointer;"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModalActualizar"
+                        data-id="${usuario.id}"
+                        data-nombre="${usuario.name}"
+                        data-email="${usuario.email}"
+                        data-estado="${usuario.estado}">
+                        <i class="bx bx-edit"></i>
+                    </a>
+
+                    <a style="color: red; cursor: pointer;"
+                        data-id="${usuario.id}"
+                        onclick="eliminar_usuario(this)">
+                        <i class="bx bx-trash"></i>
+                    </a>
+
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function renderPaginacion(paginador) {
+
+    const contenedor = document.getElementById('paginacion');
+    contenedor.innerHTML = '';
+
+    let botones = '';
+
+    // 🔹 SIEMPRE mostrar al menos la página 1
+    const totalPaginas = paginador.last_page || 1;
+
+    // 🔹 Botón anterior (aunque sea una sola página)
+    botones += `
+        <button class="btn btn-sm btn-light me-1"
+            ${paginador.current_page == 1 ? 'disabled' : ''}
+            onclick="listarUsuarios(${paginador.current_page - 1})">
+            «
+        </button>
+    `;
+
+    // 🔹 Números de página
+    for (let i = 1; i <= totalPaginas; i++) {
+        botones += `
+            <button class="btn btn-sm ${i === paginador.current_page ? 'btn-dark' : 'btn-light'} me-1"
+                onclick="listarUsuarios(${i})">
+                ${i}
+            </button>
+        `;
+    }
+
+    // 🔹 Botón siguiente
+    botones += `
+        <button class="btn btn-sm btn-light"
+            ${paginador.current_page == totalPaginas ? 'disabled' : ''}
+            onclick="listarUsuarios(${paginador.current_page + 1})">
+            »
+        </button>
+    `;
+
+    contenedor.innerHTML = botones;
 }
