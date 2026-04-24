@@ -5,10 +5,31 @@
 {{-- LISTAR USUARIO--}}
 <div class="card mt-4 p-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h6 class="mb-0">Usuarios</h6>
-        <div>
-            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar</button>
-            <button type="button" class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#exampleModalRestaurar">Restaurar</button>
+        <h6 class="mb-0">Usuarios Activos</h6>
+
+        <div class="d-flex align-items-center gap-2">
+
+            <!-- BOTONES -->
+            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                Agregar
+            </button>
+
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModalRestaurar">
+                Restaurar
+            </button>
+
+            <!-- BUSCADOR -->
+            <div class="position-relative" style="width: 180px;">
+                <i class='bx bx-search position-absolute'
+                    style="top: 50%; left: 10px; transform: translateY(-50%); color: gray;"></i>
+
+                <input
+                    type="text"
+                    id="input_buscar"
+                    class="form-control ps-5"
+                    placeholder="Buscar...">
+            </div>
+
         </div>
     </div>
     <table class="table align-middle">
@@ -39,6 +60,19 @@
             @endforeach
         </tbody>
     </table>
+    <div class="position-relative mt-3">
+        <div class="d-flex justify-content-center">
+            <select id="select_por_pagina" class="form-select" style="width:100px;">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="20">20</option>
+            </select>
+        </div>
+
+        <div id="paginacion"
+            class="position-absolute top-50 end-0 translate-middle-y">
+        </div>
+    </div>
 </div>
 
 {{-- Modal--}}

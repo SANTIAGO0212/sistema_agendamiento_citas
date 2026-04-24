@@ -26,16 +26,16 @@ class UsuarioController extends Controller
     }
 
     /**
-     * función para listar usuario con paginación y filtro
+     * función para listar usuarios activos con paginación y filtro
      * @return JsonResponse
     */
-    public function listar(Request $request)
+    public function listar_activo(Request $request)
     {
         try {
             $buscar = $request->get('buscar');
-            $porPagina = $request->get('porPagina', 10);
+            $porPagina = $request->get('porPagina', 5);
 
-            $usuarios = $this->usuarioService->listar($buscar, $porPagina);
+            $usuarios = $this->usuarioService->listar_activo($buscar, $porPagina);
             
             return response()->json([
                 'status' => 'success',
@@ -44,7 +44,31 @@ class UsuarioController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => $e->getMessage()
+                'message' => 'No se encontraron los resultados'
+            ], 500);
+        }
+    }
+
+        /**
+     * función para listar usuarios inactivos con paginación y filtro
+     * @return JsonResponse
+    */
+    public function listar_inactivo(Request $request)
+    {
+        try {
+            $buscar = $request->get('buscar');
+            $porPagina = $request->get('porPagina', 5);
+
+            $usuarios = $this->usuarioService->listar_inactivo($buscar, $porPagina);
+            
+            return response()->json([
+                'status' => 'success',
+                'usuarios' => $usuarios
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'No se encontraron los resultados'
             ], 500);
         }
     }
