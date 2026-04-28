@@ -10,6 +10,7 @@ use App\Http\Controllers\ServicioController;
 use App\Http\Controllers\EspecialistaController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\UsuarioController;
+use App\Http\Controllers\TipoDocumentosController;
 
 Route::get('test', function() {
     return response()->json(['message' => 'Funciona']);
@@ -37,6 +38,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/run', [MigrationController::class, 'runMigrations']);
     Route::get('/status', [MigrationController::class, 'migrationStatus']);        
     Route::post('/rollback', [MigrationController::class, 'rollbackMigrations']);
+    });
+
+    Route::prefix('tipo_documentos')->group(function () {
+        Route::get('/', [TipoDocumentosController::class, 'listar']);
+        Route::post('/', [TipoDocumentosController::class, 'guardar']);
+        Route::put('/{id}', [TipoDocumentosController::class, 'actualizar']);
+        Route::delete('/{id}', [TipoDocumentosController::class, 'eliminar']);
+        Route::patch('/restaurar/{id}', [TipoDocumentosController::class, 'restaurar']);
     });
 
     Route::prefix('sucursales')->group(function () {
