@@ -11,6 +11,7 @@ use App\Http\Controllers\EspecialistaController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TipoDocumentosController;
+use App\Http\Controllers\GeneroController;
 
 Route::get('test', function() {
     return response()->json(['message' => 'Funciona']);
@@ -46,6 +47,14 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [TipoDocumentosController::class, 'actualizar']);
         Route::delete('/{id}', [TipoDocumentosController::class, 'eliminar']);
         Route::patch('/restaurar/{id}', [TipoDocumentosController::class, 'restaurar']);
+    });
+
+    Route::prefix('generos')->group(function () {
+        Route::get('/', [GeneroController::class, 'listar']);
+        Route::post('/', [GeneroController::class, 'guardar']);
+        Route::put('/{id}', [GeneroController::class, 'actualizar']);
+        Route::delete('/{id}', [GeneroController::class, 'eliminar']);
+        Route::patch('/restaurar/{id}', [GeneroController::class, 'restaurar']);
     });
 
     Route::prefix('sucursales')->group(function () {
