@@ -17,6 +17,11 @@ function registrarse() {
     const correo = document.getElementById('email');
     const contrasena = document.getElementById('password');
     const estado = document.getElementById('estado');
+    const tipo_documento = document.getElementById('tipo_documento');
+    const num_identificacion = document.getElementById('num_identificacion');
+    const genero = document.getElementById('genero');
+    const telefono = document.getElementById('telefono');
+    const direccion = document.getElementById('direccion');
     const token = document.querySelector('meta[name="csrf-token"]')?.content;
 
     if (!token) {
@@ -116,7 +121,12 @@ function registrarse() {
             name: nombre.value.trim(),
             email: correo.value.trim(),
             password: contrasena.value.trim(),
-            estado: estado.value
+            estado: estado.value,
+            id_tipo_documento: tipo_documento.value,
+            num_identificacion: num_identificacion.value.trim(),
+            id_genero: genero.value,
+            telefono: telefono.value.trim(),
+            direccion: direccion.value.trim(),
         })
     })
         .then(response => {

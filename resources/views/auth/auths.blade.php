@@ -6,20 +6,61 @@
         <form method="POST" id="formulario_registro">
             @csrf
             <h1>Registrarse aquí</h1>
+
             <div class="social-icons">
                 <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
                 <a href="#" class="icon"><i class="fa-brands fa-facebook"></i></a>
                 <a href="#" class="icon"><i class="fa-brands fa-x-twitter"></i></a>
             </div>
-            <!--<span>Crea tu cuenta aquí</span>-->
+
+            <!-- Tipo documento + Número -->
+            <div class="row">
+                <select id="tipo_documento" class="form-control">
+                    <option selected>seleccione</option>
+                    @foreach ($tipo_documentos as $tipo_documento)
+                    <option value="{{ $tipo_documento->id }}">
+                        {{ $tipo_documento->cod_tipo_documento }} - {{ $tipo_documento->nom_tipo_documento }}
+                    </option>
+                    @endforeach
+                </select>
+
+                <input type="text" id="num_identificacion" class="form-control" placeholder="Número">
+            </div>
+
+            <!-- Nombre -->
             <input type="text" id="name" class="form-control" placeholder="Ingrese su nombre completo">
-            <input type="email" id="email" class="form-control" placeholder="Ingrese el correo electrónico">
-            <input type="password" id="password" class="form-control" placeholder="Ingrese la contraseña">
+
+            <!-- Email + Contraseña -->
+            
+            <input type="email" id="email" class="form-control" placeholder="Correo electrónico">
+            <input type="password" id="password" class="form-control" placeholder="Contraseña">
+            
+
+            <!-- Género -->
+            <select id="genero" class="form-control">
+                <option selected>seleccione</option>
+                @foreach ($generos as $genero)
+                <option value="{{ $genero->id }}">
+                    {{ $genero->nom_genero }}
+                </option>
+                @endforeach
+            </select>
+
+            <!-- Teléfono + Dirección -->
+            <div class="row">
+            <input type="text" id="telefono" class="form-control" placeholder="Teléfono">
+
+
+            <input type="text" id="direccion" class="form-control" placeholder="Dirección">
+            </div>
+
             <input type="hidden" id="estado" class="form-control" value="1">
-            <button type="button" id="registrar" onclick="registrarse()">{{ __('Registrarse') }}</button>
+
+            <button type="button" id="registrar" onclick="registrarse()">
+                {{ __('Registrarse') }}
+            </button>
         </form>
     </div>
-
 
     <div class="form-container sign-in">
         <form method="POST">
@@ -38,7 +79,7 @@
         </form>
     </div>
 
-    
+
     <div class="toggle-container">
         <div class="toggle">
             <div class="toggle-panel toggle-left">
