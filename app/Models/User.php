@@ -23,7 +23,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'estado'
+        'estado',
+        'telefono',
+        'num_identificacion',
+        'direccion',
+        'id_tipo_documento',
+        'id_genero'
     ];
 
     /**
@@ -47,6 +52,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function tipoDocumento()
+    {
+        return $this->belongsTo(TipoDocumentos::class, 'id_tipo_documento');
+    }
+
+    public function genero()
+    {
+        return $this->belongsTo(Genero::class, 'id_genero');
     }
 
     protected $dates = ['deleted_at'];
