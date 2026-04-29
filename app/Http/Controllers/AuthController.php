@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\TipoDocumentos;
+use App\Models\Genero;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,7 +13,9 @@ class AuthController extends Controller
 {
     public function view() {
         $credenciales = User::all();
-        return view('auth.auths', compact('credenciales'));
+        $tipo_documentos= TipoDocumentos::select('id', 'cod_tipo_documento', 'nom_tipo_documento')->where('estado',1)->get();
+        $generos= Genero::select('id', 'nom_genero')->where('estado',1)->get();
+        return view('auth.auths', compact('credenciales','tipo_documentos', 'generos'));
     }
 
 
