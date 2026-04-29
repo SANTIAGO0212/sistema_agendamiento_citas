@@ -20,12 +20,23 @@ class AuthController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|max:12',
+            'estado' => 'boolean',
+            'telefono' => 'required|string|max:255',
+            'num_identificacion' => 'required|string|max:255',
+            'direccion' => 'required|string|max:255',
+            'id_tipo_documento' => 'integer|exists:tipo_documentos,id',
+            'id_genero' => 'integer|exists:generos,id',
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'telefono' => $request->telefono,
+            'num_identificacion' => $request->num_identificacion,
+            'direccion' => $request->direccion,
+            'id_tipo_documento' => $request->id_tipo_documento,
+            'id_genero' => $request->id_genero,
         ]);
 
         $token = $user->createToken('api_token')->plainTextToken;

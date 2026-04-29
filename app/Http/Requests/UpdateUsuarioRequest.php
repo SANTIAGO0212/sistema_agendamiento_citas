@@ -22,10 +22,15 @@ class UpdateUsuarioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'string',
             'email' => 'string|email|unique:users,email,' . $this->route('id'),
             'password' => 'string|max:12',
-            'estado' => 'boolean'
+            'estado' => 'boolean',
+            'telefono' => 'string|max:255',
+            'num_identificacion' => 'string|max:255',
+            'direccion' => 'string|max:255',
+            'id_tipo_documento' => 'exists:tipo_documentos,id',
+            'id_genero' => 'exists:generos,id',
         ];
     }
 }
