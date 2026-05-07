@@ -5,6 +5,11 @@ const primer_apellido = document.getElementById('primer_apellido');
 const segundo_apellido = document.getElementById('segundo_apellido');
 const correo = document.getElementById('email');
 const contrasena = document.getElementById('password');
+const tipo_documento = document.getElementById('tipo_identificacion');
+const numero_documento = document.getElementById('num_identificacion');
+const telefono = document.getElementById('telefono');
+const direccion = document.getElementById('direccion');
+const genero = document.getElementById('genero');
 const id_user = document.getElementById('id_user_actualizar');
 const formulario_create = document.getElementById('form_create');
 const modalElement = document.getElementById('exampleModal');
@@ -47,7 +52,7 @@ function guardar() {
     }
 
     // Limpiar errores antes de validar
-    [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo].forEach(limpiarError);
+    [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, numero_documento, tipo_documento, direccion, telefono, genero].forEach(limpiarError);
 
     // Validaciones
     if (!primer_nombre.value.trim()) {
@@ -65,6 +70,31 @@ function guardar() {
         hayErrores = true;
     }
 
+    if (!tipo_documento.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!numero_documento.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!telefono.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!direccion.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!genero.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
     const nombre_completo = `${primer_nombre.value} ${segundo_nombre.value ?? ""} ${primer_apellido.value} ${segundo_apellido.value ?? ""}`;
 
     fetch('/usuarios', {
@@ -77,7 +107,12 @@ function guardar() {
         body: JSON.stringify({
             name: nombre_completo.trim(),
             email: correo.value.trim(),
-            password: contrasena.value.trim()
+            password: contrasena.value.trim(),
+            num_identificacion: numero_documento.value.trim(),
+            id_tipo_documento: tipo_identificacion.value,
+            id_genero: genero.value.trim(),
+            direccion: direccion.value.trim(),
+            telefono: telefono.value.trim()
         })
     })
         .then(response => {
@@ -114,8 +149,10 @@ function guardar() {
                         const tabla = document.getElementById('tabla_usuarios');
                         const nuevaFila = `
                             <tr id="fila_usuario_${result.data.id ?? ''}">
+                                <td>${result.data.num_identificacion}</td>
                                 <td>${nombre_completo}</td>
                                 <td>${email_guardado}</td>
+                                <td>${result.data.telefono}</td>
 
                                 <td class="text-center align-middle">
                                     <i class="bx bx-check-circle" style="color:green;"></i>
@@ -127,7 +164,13 @@ function guardar() {
                                         data-bs-target="#exampleModalVer"
                                         data-id="${result.data.id ?? ''}"
                                         data-nombre="${nombre_completo}"
-                                        data-email="${email_guardado}">
+                                        data-email="${email_guardado}"
+                                        data-estado=1
+                                        data-num_identificacion="${result.data.num_identificacion}"
+                                        data-direccion="${result.data.direccion}"
+                                        data-telefono="${result.data.telefono}"
+                                        data-genero="${result.data.nom_genero}"
+                                        data-tipo_identificacion="${result.data.cod_tipo_documento} - ${result.data.nom_tipo_documento}">
                                         <i class="bx bx-show"></i>
                                     </a>
 
@@ -136,7 +179,12 @@ function guardar() {
                                         data-bs-target="#exampleModalActualizar"
                                         data-id="${result.data.id ?? ''}"
                                         data-nombre="${nombre_completo}"
-                                        data-email="${email_guardado}">
+                                        data-email="${email_guardado}"
+                                        data-num_identificacion="${result.data.num_identificacion}"
+                                        data-direccion="${result.data.direccion}"
+                                        data-telefono="${result.data.telefono}"
+                                        data-genero="${result.data.id_genero}"
+                                        data-tipo_identificacion="${result.data.id_tipo_documento}">
                                         <i class="bx bx-edit"></i>
                                     </a>
 
@@ -164,7 +212,7 @@ function guardar_crear() {
     }
 
     // Limpiar errores antes de validar
-    [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo].forEach(limpiarError);
+    [primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, correo, numero_documento, tipo_documento, direccion, telefono, genero].forEach(limpiarError);
 
     // Validaciones
     if (!primer_nombre.value.trim()) {
@@ -182,6 +230,31 @@ function guardar_crear() {
         hayErrores = true;
     }
 
+    if (!tipo_documento.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!numero_documento.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!telefono.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!direccion.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!genero.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
     const nombre_completo = `${primer_nombre.value} ${segundo_nombre.value ?? ""} ${primer_apellido.value} ${segundo_apellido.value ?? ""}`;
 
     fetch('/usuarios', {
@@ -194,7 +267,12 @@ function guardar_crear() {
         body: JSON.stringify({
             name: nombre_completo.trim(),
             email: correo.value.trim(),
-            password: contrasena.value.trim()
+            password: contrasena.value.trim(),
+            num_identificacion: numero_documento.value.trim(),
+            id_tipo_documento: tipo_identificacion.value,
+            id_genero: genero.value.trim(),
+            direccion: direccion.value.trim(),
+            telefono: telefono.value.trim()
         })
     })
         .then(response => {
@@ -231,8 +309,10 @@ function guardar_crear() {
                         const tabla = document.getElementById('tabla_usuarios');
                         const nuevaFila = `
                             <tr id="fila_usuario_${result.data.id ?? ''}">
+                                <td>${result.data.num_identificacion}</td>
                                 <td>${nombre_completo}</td>
                                 <td>${email_guardado}</td>
+                                <td>${result.data.telefono}</td>
 
                                 <td class="text-center align-middle">
                                     <i class="bx bx-check-circle" style="color:green;"></i>
@@ -244,7 +324,13 @@ function guardar_crear() {
                                         data-bs-target="#exampleModalVer"
                                         data-id="${result.data.id ?? ''}"
                                         data-nombre="${nombre_completo}"
-                                        data-email="${email_guardado}">
+                                        data-email="${email_guardado}"
+                                        data-estado=1
+                                        data-num_identificacion="${result.data.num_identificacion}"
+                                        data-direccion="${result.data.direccion}"
+                                        data-telefono="${result.data.telefono}"
+                                        data-genero="${result.data.nom_genero}"
+                                        data-tipo_identificacion="${result.data.cod_tipo_documento} - ${result.data.nom_tipo_documento}">
                                         <i class="bx bx-show"></i>
                                     </a>
 
@@ -253,7 +339,12 @@ function guardar_crear() {
                                         data-bs-target="#exampleModalActualizar"
                                         data-id="${result.data.id ?? ''}"
                                         data-nombre="${nombre_completo}"
-                                        data-email="${email_guardado}">
+                                        data-email="${email_guardado}"
+                                        data-num_identificacion="${result.data.num_identificacion}"
+                                        data-direccion="${result.data.direccion}"
+                                        data-telefono="${result.data.telefono}"
+                                        data-genero="${result.data.id_genero}"
+                                        data-tipo_identificacion="${result.data.id_tipo_documento}">
                                         <i class="bx bx-edit"></i>
                                     </a>
 
@@ -286,6 +377,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const id = button.getAttribute('data-id');
         const nombre = button.getAttribute('data-nombre');
         const email = button.getAttribute('data-email');
+        const num_identificacion = button.getAttribute('data-num_identificacion');
+        const direccion = button.getAttribute('data-direccion');
+        const telefono = button.getAttribute('data-telefono');
+        const tipo_identificacion = button.getAttribute('data-tipo_identificacion');
+        const genero = button.getAttribute('data-genero')
         let estado = button.getAttribute('data-estado');
 
         // Separar nombre (opcional si lo tienes concatenado)
@@ -316,9 +412,9 @@ document.addEventListener('DOMContentLoaded', function () {
             segundo_apellido_ver = nombres.slice(3).join(' ');
         }
 
-        if(estado == 1) {
+        if (estado == 1) {
             estado = estado_activo_ver;
-        }else if(estado == 0) {
+        } else if (estado == 0) {
             estado = estado_inactivo_ver;
         }
 
@@ -329,6 +425,12 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('segundo_apellido_ver').value = segundo_apellido_ver || 'N/A';
         document.getElementById('email_ver').value = email;
         document.getElementById('estado_ver').value = estado;
+        document.getElementById('numero_identificacion_ver').value = num_identificacion;
+        document.getElementById('direccion_ver').value = direccion;
+        document.getElementById('telefono_ver').value = telefono;
+        document.getElementById('tipo_identificacion_ver').value = tipo_identificacion;
+        document.getElementById('genero_ver').value = genero;
+
     });
 });
 
@@ -341,21 +443,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const button = event.relatedTarget;
 
+        // VALIDAR SI EL BOTÓN EXISTE
+        if (!button) {
+            console.error('No se encontró el botón que abrió el modal');
+            return;
+        }
+
         // Obtener datos del botón
         const id = button.getAttribute('data-id');
-        const nombre = button.getAttribute('data-nombre');
-        const email = button.getAttribute('data-email');
-        const estado = button.getAttribute('data-estado');
+        const nombre = button.getAttribute('data-nombre') || '';
+        const email = button.getAttribute('data-email') || '';
+        const num_identificacion = button.getAttribute('data-num_identificacion');
+        const direccion = button.getAttribute('data-direccion');
+        const telefono = button.getAttribute('data-telefono');
+        const tipo_identificacion = button.getAttribute('data-tipo_identificacion');
+        const genero = button.getAttribute('data-genero');
+        let estado = 'Activo';
 
-        // Separar nombre (opcional si lo tienes concatenado)
+        // Separar nombre
         let nombres = nombre.trim().split(' ');
 
         let primer_nombre = '';
         let segundo_nombre = '';
         let primer_apellido = '';
         let segundo_apellido = '';
-        let estado_activo = 'Activo';
-        let estado_inactivo = 'Inactivo';
 
         if (nombres.length === 2) {
             primer_nombre = nombres[0];
@@ -375,19 +486,18 @@ document.addEventListener('DOMContentLoaded', function () {
             segundo_apellido = nombres.slice(3).join(' ');
         }
 
-        if(estado === 1) {
-            estado = estado_activo;
-        }else if (estado === 0) {
-            estado = estado_inactivo;
-        }
-
-        document.getElementById('id_user_actualizar').value = id;
+        document.getElementById('id_user_actualizar').value = id || '';
         document.getElementById('primer_nombre_actualizar').value = primer_nombre || '';
         document.getElementById('segundo_nombre_actualizar').value = segundo_nombre || '';
         document.getElementById('primer_apellido_actualizar').value = primer_apellido || '';
         document.getElementById('segundo_apellido_actualizar').value = segundo_apellido || '';
-        document.getElementById('email_actualizar').value = email;
-        document.getElementById('estado_actualizar').value = estado_activo;
+        document.getElementById('email_actualizar').value = email || '';
+        document.getElementById('numero_identificacion_actualizar').value = num_identificacion || '';
+        document.getElementById('direccion_actualizar').value = direccion || '';
+        document.getElementById('telefono_actualizar').value = telefono || '';
+        document.getElementById('tipo_identificacion_actualizar').value = tipo_identificacion || '';
+        document.getElementById('genero_actualizar').value = genero || '';
+        document.getElementById('estado_actualizar').value = estado;
     });
 });
 
@@ -398,6 +508,11 @@ function actualizar() {
     const primer_apellido = document.getElementById('primer_apellido_actualizar');
     const segundo_apellido = document.getElementById('segundo_apellido_actualizar');
     const correo = document.getElementById('email_actualizar');
+    const tipo_documento = document.getElementById('tipo_identificacion_actualizar');
+    const numero_documento = document.getElementById('numero_identificacion_actualizar');
+    const telefono = document.getElementById('telefono_actualizar');
+    const direccion = document.getElementById('direccion_actualizar');
+    const genero = document.getElementById('genero_actualizar');
     const contrasena = document.getElementById('password_actualizar');
 
 
@@ -426,6 +541,31 @@ function actualizar() {
         hayErrores = true;
     }
 
+    if (!tipo_documento.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!numero_documento.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!telefono.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!direccion.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!genero.value.trim()) {
+        marcarError(correo, 'El correo es obligatorio');
+        hayErrores = true;
+    }
+
     const nombre_completo = `${primer_nombre.value} ${segundo_nombre.value ?? ""} ${primer_apellido.value} ${segundo_apellido.value ?? ""}`;
 
     const id = id_user.value;
@@ -440,6 +580,11 @@ function actualizar() {
         body: JSON.stringify({
             name: nombre_completo.trim(),
             email: correo.value.trim(),
+            direccion: direccion.value.trim(),
+            telefono: telefono.value.trim(),
+            id_tipo_documento: tipo_documento.value.trim(),
+            id_genero: genero.value.trim(),
+            num_identificacion: numero_documento.value.trim()
             //password: contrasena.value ? contrasena.value.trim() : "12345678"
         })
     })
@@ -479,8 +624,10 @@ function actualizar() {
                         const fila = document.getElementById(`fila_usuario_${id}`);
 
                         if (fila) {
-                            fila.children[0].textContent = nombre_completo.trim();
-                            fila.children[1].textContent = correo.value.trim();
+                            fila.children[0].textContent = result.data.num_identificacion;
+                            fila.children[1].textContent = nombre_completo.trim();
+                            fila.children[2].textContent = correo.value.trim();
+                            fila.children[3].textContent = result.data.telefono;
                         }
 
                         const btnEditar = fila.querySelector('[data-bs-target="#exampleModalActualizar"]');
@@ -488,6 +635,11 @@ function actualizar() {
                         if (btnEditar) {
                             btnEditar.setAttribute('data-nombre', nombre_completo.trim());
                             btnEditar.setAttribute('data-email', correo.value.trim());
+                            btnEditar.setAttribute('data-num_identificacion', result.data.num_identificacion);
+                            btnEditar.setAttribute('data-direccion', result.data.direccion);
+                            btnEditar.setAttribute('data-telefono', result.data.telefono);
+                            btnEditar.setAttribute('data-tipo_identificacion', result.data.id_tipo_documento);
+                            btnEditar.setAttribute('data-genero', result.data.id_genero);
                         }
 
                         const btnVer = fila.querySelector('[data-bs-target="#exampleModalVer"]');
@@ -495,6 +647,11 @@ function actualizar() {
                         if (btnVer) {
                             btnVer.setAttribute('data-nombre', nombre_completo.trim());
                             btnVer.setAttribute('data-email', correo.value.trim());
+                            btnVer.setAttribute('data-telefono', result.data.telefono);
+                            btnVer.setAttribute('data-direccion', result.data.direccion);
+                            btnVer.setAttribute('data-num_identificacion', result.data.num_identificacion);
+                            btnVer.setAttribute('data-genero', result.data.nom_genero);
+                            btnVer.setAttribute('data-tipo_identificacion', result.data.cod_tipo_documento + ' - ' + result.data.nom_tipo_documento);
                         }
                     }
                 });
@@ -671,7 +828,6 @@ function restaurar_usuario(element) {
 
 
 // PROCESO PARA EL LISTAR Y LA PAGINACIÓN
-
 
 document.addEventListener('DOMContentLoaded', function () {
 
