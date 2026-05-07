@@ -36,8 +36,10 @@
         <thead>
             <tr>
                 <!--<th>#</th>-->
+                <th>Número identificación</th>
                 <th>Nombre completo</th>
                 <th>Email</th>
+                <th>Teléfono</th>
                 <th class="text-center align-middle">Estado</th>
                 <th class="text-center align-middle">Acciones</th>
             </tr>
@@ -46,14 +48,16 @@
             @foreach($usuarios as $usuario)
             <tr id="fila_usuario_{{ $usuario['id'] }}">
                 <!--<td>{{ $usuario['id'] }}</td>-->
+                <td>{{ $usuario['num_identificacion'] }}</td>
                 <td>{{ $usuario['name'] }}</td>
                 <td>{{ $usuario['email'] }}</td>
+                <td>{{ $usuario['telefono'] }}</td>
                 @if ($usuario['estado'] === 1 )
                 <td class="text-center align-middle"><i class="bx bx-check-circle" style="color:green;"></i></td>
                 @endif
                 <td class="text-center align-middle">
-                    <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-estado="{{ $usuario['estado'] }}"><i class="bx bx-show"></i></a>
-                    <a style="color: purple; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalActualizar" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-estado="{{ $usuario['estado'] }}"><i class="bx bx-edit"></i></a>
+                    <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-estado="{{ $usuario['estado'] }}" data-num_identificacion="{{ $usuario['num_identificacion'] }}" data-direccion="{{ $usuario['direccion'] }}" data-telefono="{{ $usuario['telefono'] }}" data-tipo_identificacion="{{ $usuario->tipoDocumento->cod_tipo_documento }} - {{ $usuario->tipoDocumento->nom_tipo_documento }}" data-genero="{{ $usuario->genero->nom_genero }}"><i class="bx bx-show"></i></a>
+                    <a style="color: purple; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalActualizar" data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}" data-estado="{{ $usuario['estado'] }}" data-num_identificacion="{{ $usuario['num_identificacion'] }}" data-direccion="{{ $usuario['direccion'] }}" data-telefono="{{ $usuario['telefono'] }}" data-tipo_identificacion="{{ $usuario['id_tipo_documento'] }}" data-genero="{{ $usuario['id_genero'] }}"><i class="bx bx-edit"></i></a>
                     <a style="color: red; cursor: pointer;" data-id="{{ $usuario['id'] }}" onclick="eliminar_usuario(this)"><i class="bx bx-trash"></i></a>
                 </td>
             </tr>
@@ -86,6 +90,26 @@
             <div class="modal-body">
                 <form method="post" id="form_create">
                     @csrf
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="tipo_identificacion_label mb-2">Tipo De Identificación <span style="color:red;">*</span></label>
+                            <select id="tipo_identificacion" name="tipo_identificacion" class="form-control" required>
+                                <option selected>seleccione</option>
+                                @foreach ($tipo_documentos as $tipo_documento)
+                                <option value="{{ $tipo_documento->id }}">
+                                    {{ $tipo_documento->cod_tipo_documento }} - {{ $tipo_documento->nom_tipo_documento }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="numero_identificacion_label mb-2">Número De Identificación <span style="color:red;">*</span></label>
+                            <input type="text" id="num_identificacion" name="num_identificacion" class="form-control" placeholder="Segundo nombre del usuario">
+                        </div>
+                    </div>
+
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label for="primer_nombre_label mb-2">Primer Nombre <span style="color:red;">*</span> </label>
@@ -112,14 +136,38 @@
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
+                            <label for="genero_label mb-2">Género <span style="color:red;">*</span></label>
+                            <select id="genero" name="genero" class="form-control" required>
+                                <option selected>seleccione</option>
+                                @foreach ($generos as $genero)
+                                <option value="{{ $genero->id }}">
+                                    {{ $genero->nom_genero }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
                             <label for="email_label mb-2">Correo electrónico <span style="color:red;">*</span> </label>
                             <input type="email" id="email" name="email" class="form-control" placeholder="Correo electrónico" required>
                         </div>
+                    </div>
 
-                        <div class="col-md-4" hidden>
-                            <label for="password_label mb-2">Contraseña <span style="color:red;">*</span> </label>
-                            <input type="password" id="password" name="password" class="form-control" value="12345678" required>
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="direccion_label mb-2">Dirección <span style="color:red;">*</span> </label>
+                            <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Dirección" required>
                         </div>
+
+                        <div class="col-md-6">
+                            <label for="telefono_label mb-2">Teléfono <span style="color:red;">*</span> </label>
+                            <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Teléfono" required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" hidden>
+                        <label for="password_label mb-2">Contraseña <span style="color:red;">*</span> </label>
+                        <input type="password" id="password" name="password" class="form-control" value="12345678" required>
                     </div>
                 </form>
             </div>
@@ -142,8 +190,21 @@
             </div>
             <div class="modal-body">
                 <form id="form_create">
+
                     <div class="row g-3 mb-3">
                         <input type="text" id="id_user_ver" name="id_user_ver" disabled hidden>
+                        <div class="col-md-6">
+                            <label for="tipo_identificacion_label mb-2">Tipo Identificación</label>
+                            <input type="text" id="tipo_identificacion_ver" name="tipo_identificacion_ver" class="form-control" disabled>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="numero_identificacion_label mb-2">Número De Identificación</label>
+                            <input type="text" id="numero_identificacion_ver" name="numero_identificacion_ver" class="form-control" disabled>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label for="primer_nombre_label mb-2">Primer Nombre</label>
                             <input type="text" id="primer_nombre_ver" name="primer_nombre_ver" class="form-control" disabled>
@@ -169,11 +230,29 @@
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
+                            <label for="genero_label mb-2">Género</label>
+                            <input type="text" id="genero_ver" name="genero_ver" class="form-control" disabled>
+                        </div>
+
+                        <div class="col-md-6">
                             <label for="email_label mb-2">Correo electrónico</label>
                             <input type="email" id="email_ver" name="email_ver" class="form-control" disabled>
                         </div>
 
-                        <div class="col-md-2">
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label for="direccion_label mb-2">Dirección</label>
+                            <input type="email" id="direccion_ver" name="direccion_ver" class="form-control" disabled>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="telefono_label mb-2">Teléfono</label>
+                            <input type="email" id="telefono_ver" name="telefono_ver" class="form-control" disabled>
+                        </div>
+
+                        <div class="col-md-4">
                             <label for="estado_label mb-2">Estado</label>
                             <input type="text" id="estado_ver" name="estado_ver" class="form-control" disabled>
                         </div>
@@ -199,8 +278,28 @@
             <div class="modal-body">
                 <form method="post" id="form_create">
                     @csrf
+
                     <div class="row g-3 mb-3">
                         <input type="hidden" id="id_user_actualizar" name="id_user_actualizar">
+                        <div class="col-md-6">
+                            <label for="tipo_identificacion_label mb-2">Tipo De Identificación <span style="color:red;">*</span></label>
+                            <select id="tipo_identificacion_actualizar" name="tipo_identificacion_actualizar" class="form-control" required>
+                                <option selected>seleccione</option>
+                                @foreach ($tipo_documentos as $tipo_documento)
+                                <option value="{{ $tipo_documento->id }}">
+                                    {{ $tipo_documento->cod_tipo_documento }} - {{ $tipo_documento->nom_tipo_documento }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="numero_identificacion_label mb-2">Número De Identificación</label>
+                            <input type="text" id="numero_identificacion_actualizar" name="numero_identificacion_actualizar" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
                         <div class="col-md-6">
                             <label for="primer_nombre_label mb-2">Primer Nombre <span style="color:red;">*</span> </label>
                             <input type="text" id="primer_nombre_actualizar" name="primer_nombre_actualizar" class="form-control" required>
@@ -226,10 +325,32 @@
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
+                            <label for="genero_label mb-2">Género <span style="color:red;">*</span></label>
+                            <select id="genero_actualizar" name="genero_actualizar" class="form-control" required>
+                                <option selected>seleccione</option>
+                                @foreach ($generos as $genero)
+                                <option value="{{ $genero->id }}">
+                                    {{ $genero->nom_genero }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
                             <label for="email_label mb-2">Correo electrónico <span style="color:red;">*</span> </label>
                             <input type="email" id="email_actualizar" name="email_actualizar" class="form-control" required>
                         </div>
+                    </div>
 
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="direccion_label mb-2">Dirección <span style="color:red;">*</span> </label>
+                            <input type="text" id="direccion_actualizar" name="direccion_actualizar" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="telefono_label mb-2">Teléfono <span style="color:red;">*</span> </label>
+                            <input type="text" id="telefono_actualizar" name="telefono_actualizar" class="form-control" required>
+                        </div>
                         <div class="col-md-2" hidden>
                             <label for="estado_label mb-2">Estado</label>
                             <input type="text" id="estado_actualizar" name="estado_actualizar" class="form-control" disabled>
