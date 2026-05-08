@@ -97,12 +97,19 @@ class UsuarioService
     public function eliminar(int $id)
     {
         $user = User::findOrFail($id);
+        $user->load('genero', 'tipoDocumento');
 
         $data = [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'estado' => $user->estado
+            'estado' => $user->estado,
+            'num_identificacion' => $user->num_identificacion,
+            'telefono' => $user->telefono,
+            'nom_genero' => $user->genero->nom_genero,
+            'nom_tipo_documento' => $user->tipoDocumento->nom_tipo_documento,
+            'cod_tipo_documento' => $user->tipoDocumento->cod_tipo_documento,
+            'direccion' => $user->direccion
         ];
 
         $user->estado = 0;
@@ -121,12 +128,21 @@ class UsuarioService
     public function restaurar(int $id)
     {
         $user = User::findOrFail($id);
-
+        $user->load('genero', 'tipoDocumento');
+        
         $data = [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
-            'estado' => $user->estado
+            'estado' => $user->estado,
+            'num_identificacion' => $user->num_identificacion,
+            'telefono' => $user->telefono,
+            'nom_genero' => $user->genero->nom_genero,
+            'nom_tipo_documento' => $user->tipoDocumento->nom_tipo_documento,
+            'cod_tipo_documento' => $user->tipoDocumento->cod_tipo_documento,
+            'direccion' => $user->direccion,
+            'id_genero' => $user->id_genero,
+            'id_tipo_documento' => $user->id_tipo_documento
         ];
 
         $user->estado = 1;

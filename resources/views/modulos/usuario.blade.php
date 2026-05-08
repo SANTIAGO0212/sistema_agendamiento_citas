@@ -378,8 +378,10 @@
                 <table class="table align-middle">
                     <thead>
                         <tr>
+                            <th>Número identificación</th>
                             <th>Nombre completo</th>
                             <th>Email</th>
+                            <th>Teléfono</th>
                             <th class="text-center align-middle">Estado</th>
                             <th class="text-center align-middle">Acciones</th>
                         </tr>
@@ -388,13 +390,15 @@
                         @foreach($usuarios_inactivos as $usuario_inactivo)
                         <tr id="fila_usuario_inactivo_{{ $usuario_inactivo['id'] }}">
                             <!--<td>{{ $usuario_inactivo['id'] }}</td>-->
+                            <td>{{ $usuario_inactivo['num_identificacion'] }}</td>
                             <td>{{ $usuario_inactivo['name'] }}</td>
                             <td>{{ $usuario_inactivo['email'] }}</td>
+                            <td>{{ $usuario_inactivo['telefono'] }}</td>
                             @if ($usuario_inactivo['estado'] === 0 )
                             <td class="text-center align-middle"><i class="bx bx-x-circle" style="color:red;"></i></td>
                             @endif
                             <td class="text-center align-middle">
-                                <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="{{ $usuario_inactivo['id'] }}" data-nombre="{{ $usuario_inactivo['name'] }}" data-email="{{ $usuario_inactivo['email'] }}" data-estado="{{ $usuario_inactivo['estado'] }}"><i class="bx bx-show"></i></a>
+                                <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="{{ $usuario_inactivo['id'] }}" data-nombre="{{ $usuario_inactivo['name'] }}" data-email="{{ $usuario_inactivo['email'] }}" data-estado="{{ $usuario_inactivo['estado'] }}" data-num_identificacion="{{ $usuario_inactivo['num_identificacion'] }}" data-direccion="{{ $usuario_inactivo['direccion'] }}" data-telefono="{{ $usuario_inactivo['telefono'] }}" data-tipo_identificacion="{{ $usuario_inactivo->tipoDocumento->cod_tipo_documento }} - {{ $usuario_inactivo->tipoDocumento->nom_tipo_documento }}" data-genero="{{ $usuario_inactivo->genero->nom_genero }}"><i class="bx bx-show"></i></a>
                                 <a style="color: gold; cursor: pointer;align-items: center;" data-id="{{ $usuario_inactivo['id'] }}" onclick="restaurar_usuario(this)"><i class="bx bx-refresh"></i></a>
                             </td>
                         </tr>

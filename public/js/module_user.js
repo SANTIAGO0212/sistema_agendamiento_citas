@@ -710,15 +710,17 @@ function eliminar_usuario(elemento) {
                         const tabla = document.getElementById('tabla_usuarios_inactivos');
                         const nuevaFila = `
                             <tr id="fila_usuario_inactivo_${result.data.id ?? ''}">
+                                <td>${result.data.num_identificacion}</td>
                                 <td>${result.data.name}</td>
                                 <td>${result.data.email}</td>
+                                <td>${result.data.telefono}</td>
 
                                 <td class="text-center align-middle">
                                     <i class="bx bx-x-circle" style="color:red;"></i>
                                 </td>
 
                                 <td class="text-center align-middle">
-                                   <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="${result.data.id}" data-nombre="${result.data.name}" data-email="${result.data.email}" data-estado="0"><i class="bx bx-show"></i></a>
+                                   <a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer" data-id="${result.data.id}" data-nombre="${result.data.name}" data-email="${result.data.email}" data-estado="0" data-num_identificacion="${result.data.num_identificacion}" data-direccion="${result.data.direccion}" data-telefono="${result.data.telefono}" data-genero="${result.data.nom_genero}" data-tipo_identificacion="${result.data.cod_tipo_documento} - ${result.data.nom_tipo_documento}"><i class="bx bx-show"></i></a>
                                    <a style="color: gold; cursor: pointer;align-items: center;" data-id="${result.data.id}" onclick="restaurar_usuario(this)"><i class="bx bx-refresh"></i></a>
                                 </td>
                             </tr>`;
@@ -782,8 +784,10 @@ function restaurar_usuario(element) {
                         const tabla = document.getElementById('tabla_usuarios');
                         const nuevaFila = `
                             <tr id="fila_usuario_${result.data.id ?? ''}">
+                                <td>${result.data.num_identificacion}</td> 
                                 <td>${result.data.name}</td>
                                 <td>${result.data.email}</td>
+                                <td>${result.data.telefono}</td>
 
                                 <td class="text-center align-middle">
                                     <i class="bx bx-check-circle" style="color:green;"></i>
@@ -796,7 +800,12 @@ function restaurar_usuario(element) {
                                     data-id="${result.data.id}"
                                     data-nombre="${result.data.name}"
                                     data-email="${result.data.email}"
-                                    data-estado="1">
+                                    data-estado="1"
+                                    data-num_identificacion="${result.data.num_identificacion}"
+                                    data-direccion="${result.data.direccion}"
+                                    data-telefono="${result.data.telefono}"
+                                    data-genero="${result.data.nom_genero}"
+                                    data-tipo_identificacion="${result.data.cod_tipo_documento} - ${result.data.nom_tipo_documento}">
                                     <i class="bx bx-show"></i>
                                 </a>
 
@@ -806,7 +815,12 @@ function restaurar_usuario(element) {
                                     data-id="${result.data.id}"
                                     data-nombre="${result.data.name}"
                                     data-email="${result.data.email}"
-                                    data-estado="{{ ${result.data.estado} }}">
+                                    data-estado="${result.data.estado}"
+                                    data-num_identificacion="${result.data.num_identificacion}"
+                                    data-direccion="${result.data.direccion}"
+                                    data-telefono="${result.data.telefono}"
+                                    data-genero="${result.data.id_genero}"
+                                    data-tipo_identificacion="${result.data.id_tipo_documento}">
                                     <i class="bx bx-edit"></i>
                                 </a>
 
