@@ -151,7 +151,15 @@ class UsuarioController extends Controller
                 'id' => $usuario['id'],
                 'name' => $usuario['name'],
                 'email' => $usuario['email'],
-                'estado' => $usuario['estado']
+                'estado' => $usuario['estado'],
+                'num_identificacion' =>$usuario['num_identificacion'],
+                'telefono' => $usuario['telefono'],
+                'direccion' => $usuario['direccion'],
+                'nom_genero' => $usuario['nom_genero'],
+                'nom_tipo_documento' => $usuario['nom_tipo_documento'],
+                'cod_tipo_documento' => $usuario['cod_tipo_documento'],
+                'id_genero' => $usuario['id_genero'],
+                'id_tipo_documento' => $usuario['id_tipo_documento']
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
@@ -174,7 +182,15 @@ class UsuarioController extends Controller
                 'id' => $usuario['id'],
                 'name' => $usuario['name'],
                 'email' => $usuario['email'],
-                'estado' => $usuario['estado']
+                'estado' => $usuario['estado'],
+                'num_identificacion' =>$usuario['num_identificacion'],
+                'telefono' => $usuario['telefono'],
+                'direccion' => $usuario['direccion'],
+                'nom_genero' => $usuario['nom_genero'],
+                'nom_tipo_documento' => $usuario['nom_tipo_documento'],
+                'cod_tipo_documento' => $usuario['cod_tipo_documento'],
+                'id_genero' => $usuario['id_genero'],
+                'id_tipo_documento' => $usuario['id_tipo_documento']
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
