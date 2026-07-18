@@ -109,7 +109,9 @@ class UsuarioService
             'nom_genero' => $user->genero->nom_genero,
             'nom_tipo_documento' => $user->tipoDocumento->nom_tipo_documento,
             'cod_tipo_documento' => $user->tipoDocumento->cod_tipo_documento,
-            'direccion' => $user->direccion
+            'direccion' => $user->direccion,
+            'id_genero' => $user->id_genero,
+            'id_tipo_documento' => $user->id_tipo_documento,
         ];
 
         $user->estado = 0;

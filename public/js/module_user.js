@@ -17,6 +17,7 @@ const modalElementActualizar = document.getElementById('exampleModalActualizar')
 const modal_ver = document.getElementById('exampleModalVer');
 let hayErrores = false;
 let pagina_actual = 1;
+let pagina_actual_inactivo = 1;
 const token = document.querySelector('meta[name="csrf-token"]')?.content;
 
 function marcarError(input, mensaje) {
@@ -850,17 +851,27 @@ document.addEventListener('DOMContentLoaded', function () {
     // 🔹 Eventos
     document.getElementById('input_buscar').addEventListener('keyup', function () {
         pagina_actual = 1;
-        listarUsuarios();
+        listarUsuariosActivos();
     });
 
     document.getElementById('select_por_pagina').addEventListener('change', function () {
         pagina_actual = 1;
-        listarUsuarios();
+        listarUsuariosActivos();
+    });
+
+    document.getElementById('select_por_pagina_inactivo').addEventListener('change', function () {
+        pagina_actual_inactivo = 1;
+        listarUsuariosInactivos();
+    });
+
+    document.getElementById('input_buscar_inactivo').addEventListener('change', function () {
+        pagina_actual_inactivo = 1;
+        listarUsuariosInactivos();
     });
 
 });
 
-function listarUsuarios(page = 1) {
+function listarUsuariosActivos(page = 1) {
 
     pagina_actual = page;
 
@@ -868,6 +879,30 @@ function listarUsuarios(page = 1) {
     const porPagina = document.getElementById('select_por_pagina').value;
 
     fetch(`/usuarios/activo?buscar=${buscar}&porPagina=${porPagina}&page=${page}`)
+        .then(response => response.json())
+        .then(result => {
+
+            if (result.status === 'success') {
+
+                renderTabla(result.usuarios.data);
+                renderPaginacion(result.usuarios);
+
+            } else {
+                console.error(result);
+            }
+
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+function listarUsuariosInactivos(page = 1) {
+
+    pagina_actual_inactivo = page;
+
+    const buscar = document.getElementById('input_buscar_inactivo').value;
+    const porPagina = document.getElementById('select_por_pagina_inactivo').value;
+
+    fetch(`/usuarios/inactivo?buscar=${buscar}&porPagina=${porPagina}&page=${page}`)
         .then(response => response.json())
         .then(result => {
 
@@ -952,7 +987,7 @@ function renderPaginacion(paginador) {
     botones += `
         <button class="btn btn-sm btn-light me-1"
             ${paginador.current_page == 1 ? 'disabled' : ''}
-            onclick="listarUsuarios(${paginador.current_page - 1})">
+            onclick="listarUsuariosActivos(${paginador.current_page - 1})">
             «
         </button>
     `;
@@ -961,7 +996,7 @@ function renderPaginacion(paginador) {
     for (let i = 1; i <= totalPaginas; i++) {
         botones += `
             <button class="btn btn-sm ${i === paginador.current_page ? 'btn-dark' : 'btn-light'} me-1"
-                onclick="listarUsuarios(${i})">
+                onclick="listarUsuariosActivos(${i})">
                 ${i}
             </button>
         `;
@@ -971,7 +1006,7 @@ function renderPaginacion(paginador) {
     botones += `
         <button class="btn btn-sm btn-light"
             ${paginador.current_page == totalPaginas ? 'disabled' : ''}
-            onclick="listarUsuarios(${paginador.current_page + 1})">
+            onclick="listarUsuariosActivos(${paginador.current_page + 1})">
             »
         </button>
     `;
