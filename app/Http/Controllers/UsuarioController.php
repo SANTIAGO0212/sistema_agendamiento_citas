@@ -37,7 +37,7 @@ class UsuarioController extends Controller
     {
         try {
             $buscar = $request->get('buscar');
-            $porPagina = $request->get('porPagina', 5);
+            $porPagina = $request->get('porPagina', 10);
 
             $usuarios = $this->usuarioService->listar_activo($buscar, $porPagina);
             
@@ -61,7 +61,7 @@ class UsuarioController extends Controller
     {
         try {
             $buscar = $request->get('buscar');
-            $porPagina = $request->get('porPagina', 5);
+            $porPagina = $request->get('porPagina', 10);
 
             $usuarios = $this->usuarioService->listar_inactivo($buscar, $porPagina);
             
@@ -72,7 +72,7 @@ class UsuarioController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'No se encontraron los resultados'
+                'message' => 'No se encontraron los resultados' 
             ], 500);
         }
     }
