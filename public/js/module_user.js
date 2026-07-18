@@ -847,11 +847,19 @@ function restaurar_usuario(element) {
 document.addEventListener('DOMContentLoaded', function () {
 
     renderPaginacion(paginadorInicial);
+    renderPaginacionInactivo(paginadorInicialInactivo)
 
-    // 🔹 Eventos
+    let timeout_busqueda = null;
+    let timeout_busqueda_inactivos = null;
+    
+
     document.getElementById('input_buscar').addEventListener('keyup', function () {
         pagina_actual = 1;
-        listarUsuariosActivos();
+        clearTimeout(timeout_busqueda);
+
+        timeout_busqueda= setTimeout(() => {
+            listarUsuariosActivos();
+        }, 400)
     });
 
     document.getElementById('select_por_pagina').addEventListener('change', function () {
@@ -859,12 +867,16 @@ document.addEventListener('DOMContentLoaded', function () {
         listarUsuariosActivos();
     });
 
-    document.getElementById('select_por_pagina_inactivo').addEventListener('change', function () {
+    document.getElementById('input_buscar_inactivo').addEventListener('keyup', function () {
         pagina_actual_inactivo = 1;
-        listarUsuariosInactivos();
+        clearTimeout(timeout_busqueda_inactivos);
+
+        timeout_busqueda_inactivos= setTimeout(() => {
+            listarUsuariosInactivos();
+        }, 400)
     });
 
-    document.getElementById('input_buscar_inactivo').addEventListener('change', function () {
+    document.getElementById('select_por_pagina_inactivo').addEventListener('change', function () {
         pagina_actual_inactivo = 1;
         listarUsuariosInactivos();
     });
@@ -874,11 +886,20 @@ document.addEventListener('DOMContentLoaded', function () {
 function listarUsuariosActivos(page = 1) {
 
     pagina_actual = page;
+    let controladorBusqueda = null;
 
     const buscar = document.getElementById('input_buscar').value;
     const porPagina = document.getElementById('select_por_pagina').value;
 
-    fetch(`/usuarios/activo?buscar=${buscar}&porPagina=${porPagina}&page=${page}`)
+    if(controladorBusqueda) {
+        controladorBusqueda.abort();
+    }
+
+    controladorBusqueda = new AbortController();
+
+    fetch(`/usuarios/activo?buscar=${encodeURIComponent(buscar)}&porPagina=${porPagina}&page=${page}`, {
+            signal: controladorBusqueda.signal
+           })
         .then(response => response.json())
         .then(result => {
 
@@ -887,32 +908,42 @@ function listarUsuariosActivos(page = 1) {
                 renderTabla(result.usuarios.data);
                 renderPaginacion(result.usuarios);
 
-            } else {
-                console.error(result);
+            }
+        })
+        .catch(error => {
+
+            if (error.name !== 'AbortError') {
+                console.error('Error:', error);
             }
 
-        })
-        .catch(error => console.error('Error:', error));
+        });
 }
 
 function listarUsuariosInactivos(page = 1) {
 
     pagina_actual_inactivo = page;
+    let controladorBusqueda = null;
 
     const buscar = document.getElementById('input_buscar_inactivo').value;
     const porPagina = document.getElementById('select_por_pagina_inactivo').value;
 
-    fetch(`/usuarios/inactivo?buscar=${buscar}&porPagina=${porPagina}&page=${page}`)
+    if(controladorBusqueda) {
+        controladorBusqueda.abort();
+    }
+
+    controladorBusqueda = new AbortController();
+
+    fetch(`/usuarios/inactivo?buscar=${encodeURIComponent(buscar)}&porPagina=${porPagina}&page=${page}`, {
+        signal: controladorBusqueda.signal
+    })
         .then(response => response.json())
         .then(result => {
 
             if (result.status === 'success') {
 
-                renderTabla(result.usuarios.data);
-                renderPaginacion(result.usuarios);
+                renderTablaInactivo(result.usuarios.data);
+                renderPaginacionInactivo(result.usuarios);
 
-            } else {
-                console.error(result);
             }
 
         })
@@ -924,6 +955,20 @@ function renderTabla(usuarios) {
     const tabla = document.getElementById('tabla_usuarios');
     tabla.innerHTML = '';
 
+    // Si no hay registros
+
+    if(usuarios.length === 0) {
+        tabla.innerHTML = `
+           <tr>
+             <td colspan = "6" class="text-center text-muted py-2">
+               No hay resultados en este momento.
+             </td>
+           </tr>
+        `;
+
+        return;
+    }
+
     usuarios.forEach(usuario => {
 
         let estadoIcono = usuario.estado == 1
@@ -932,8 +977,10 @@ function renderTabla(usuarios) {
 
         tabla.innerHTML += `
             <tr id="fila_usuario_${usuario.id}">
+                <td>${usuario.num_identificacion}</td>
                 <td>${usuario.name}</td>
                 <td>${usuario.email}</td>
+                <td>${usuario.telefono}</td>
 
                 <td class="text-center align-middle">
                     ${estadoIcono}
@@ -947,7 +994,12 @@ function renderTabla(usuarios) {
                         data-id="${usuario.id}"
                         data-nombre="${usuario.name}"
                         data-email="${usuario.email}"
-                        data-estado="${usuario.estado}">
+                        data-estado="1"
+                        data-num_identificacion="${usuario.num_identificacion}"
+                        data-direccion="${usuario.direccion}"
+                        data-telefono="${usuario.telefono}"
+                        data-genero="${usuario.nom_genero}"
+                        data-tipo_identificacion="${usuario.cod_tipo_documento} - ${usuario.nom_tipo_documento}">
                         <i class="bx bx-show"></i>
                     </a>
 
@@ -957,7 +1009,12 @@ function renderTabla(usuarios) {
                         data-id="${usuario.id}"
                         data-nombre="${usuario.name}"
                         data-email="${usuario.email}"
-                        data-estado="${usuario.estado}">
+                        data-estado="1"
+                        data-num_identificacion="${usuario.num_identificacion}"
+                        data-direccion="${usuario.direccion}"
+                        data-telefono="${usuario.telefono}"
+                        data-genero="${usuario.id_genero}"
+                        data-tipo_identificacion="${usuario.id_tipo_documento}">
                         <i class="bx bx-edit"></i>
                     </a>
 
@@ -965,6 +1022,65 @@ function renderTabla(usuarios) {
                         data-id="${usuario.id}"
                         onclick="eliminar_usuario(this)">
                         <i class="bx bx-trash"></i>
+                    </a>
+
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function renderTablaInactivo(usuarios_inactivos) {
+
+    const tabla = document.getElementById('tabla_usuarios_inactivos');
+    tabla.innerHTML = '';
+
+        if(usuarios_inactivos.length === 0) {
+        tabla.innerHTML = `
+           <tr>
+             <td colspan = "6" class="text-center text-muted py-2">
+               No se ha encontrado ningún resultado.
+             </td>
+           </tr>
+        `;
+
+        return;
+    }
+
+    usuarios_inactivos.forEach(usuario_inactivo => {
+
+        tabla.innerHTML += `
+            <tr id="fila_usuario_inactivo_${usuario_inactivo.id}">
+                <td>${usuario_inactivo.num_identificacion}</td>
+                <td>${usuario_inactivo.name}</td>
+                <td>${usuario_inactivo.email}</td>
+                <td>${usuario_inactivo.telefono}</td>
+
+                <td class="text-center align-middle">
+                    '<i class="bx bx-x-circle" style="color:red;"></i>'
+                </td>
+
+                <td class="text-center align-middle">
+
+                    <a style="color: orange; cursor: pointer;"
+                        data-bs-toggle="modal"
+                        data-bs-target="#exampleModalVer"
+                        data-id="${usuario_inactivo.id}"
+                        data-nombre="${usuario_inactivo.name}"
+                        data-email="${usuario_inactivo.email}"
+                        data-estado="1"
+                        data-num_identificacion="${usuario_inactivo.num_identificacion}"
+                        data-direccion="${usuario_inactivo.direccion}"
+                        data-telefono="${usuario_inactivo.telefono}"
+                        data-genero="${usuario_inactivo.nom_genero}"
+                        data-tipo_identificacion="${usuario_inactivo.cod_tipo_documento} - ${usuario_inactivo.nom_tipo_documento}">
+                        <i class="bx bx-show"></i>
+                    </a>
+
+                    <a style="color: gold; cursor: pointer;align-items: center;" 
+                        data-id="${usuario_inactivo.id}" 
+                        onclick="restaurar_usuario(this)">
+                        <i class="bx bx-refresh"></i>
                     </a>
 
                 </td>
@@ -1007,6 +1123,47 @@ function renderPaginacion(paginador) {
         <button class="btn btn-sm btn-light"
             ${paginador.current_page == totalPaginas ? 'disabled' : ''}
             onclick="listarUsuariosActivos(${paginador.current_page + 1})">
+            »
+        </button>
+    `;
+
+    contenedor.innerHTML = botones;
+}
+
+function renderPaginacionInactivo(paginador_inactivo) {
+
+    const contenedor = document.getElementById('paginacion_inactivo');
+    contenedor.innerHTML = '';
+
+    let botones = '';
+
+    // 🔹 SIEMPRE mostrar al menos la página 1
+    const totalPaginas = paginador_inactivo.last_page || 1;
+
+    // 🔹 Botón anterior (aunque sea una sola página)
+    botones += `
+        <button class="btn btn-sm btn-light me-1"
+            ${paginador_inactivo.current_page == 1 ? 'disabled' : ''}
+            onclick="listarUsuariosInactivos(${paginador_inactivo.current_page - 1})">
+            «
+        </button>
+    `;
+
+    // 🔹 Números de página
+    for (let i = 1; i <= totalPaginas; i++) {
+        botones += `
+            <button class="btn btn-sm ${i === paginador_inactivo.current_page ? 'btn-dark' : 'btn-light'} me-1"
+                onclick="listarUsuariosInactivos(${i})">
+                ${i}
+            </button>
+        `;
+    }
+
+    // 🔹 Botón siguiente
+    botones += `
+        <button class="btn btn-sm btn-light"
+            ${paginador_inactivo.current_page == totalPaginas ? 'disabled' : ''}
+            onclick="listarUsuariosInactivos(${paginador_inactivo.current_page + 1})">
             »
         </button>
     `;

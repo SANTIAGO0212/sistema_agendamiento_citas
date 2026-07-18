@@ -27,11 +27,25 @@ class UsuarioService
 
     public function listar_activo(?string $buscar = null, int $porPagina = 10)
     {
-        $query = User::where('estado', 1);
+        //$query = User::where('estado', 1);
+    $query = User::query()
+        ->leftJoin('generos', 'users.id_genero', '=', 'generos.id')
+        ->leftJoin('tipo_documentos', 'users.id_tipo_documento', '=', 'tipo_documentos.id')
+        ->select(
+            'users.*',
+            'generos.nom_genero',
+            'tipo_documentos.cod_tipo_documento',
+            'tipo_documentos.nom_tipo_documento'
+        )
+        ->where('users.estado', 1);
 
         // Si hay filtro, aplica búsqueda
         if (!empty($buscar)) {
-            $query->where('name', 'LIKE', "%{$buscar}%");
+            $query->where(function ($q) use ($buscar) {
+                $q->where('num_identificacion', 'LIKE', "%{$buscar}%")
+                ->orWhere('name', 'LIKE', "%{$buscar}%")
+                ->orWhere('email', 'LIKE', "%{$buscar}%");
+            });
         }
 
         // Si el parámetro de paginación es verdadero
@@ -45,11 +59,24 @@ class UsuarioService
 
     public function listar_inactivo(?string $buscar = null, int $porPagina = 10)
     {
-        $query = User::where('estado', 0);
+        $query = User::query()
+        ->leftJoin('generos', 'users.id_genero', '=', 'generos.id')
+        ->leftJoin('tipo_documentos', 'users.id_tipo_documento', '=', 'tipo_documentos.id')
+        ->select(
+            'users.*',
+            'generos.nom_genero',
+            'tipo_documentos.cod_tipo_documento',
+            'tipo_documentos.nom_tipo_documento'
+        )
+        ->where('users.estado', 0);
 
         // Si hay filtro, aplica búsqueda
         if (!empty($buscar)) {
-            $query->where('name', 'LIKE', "%{$buscar}%");
+            $query->where(function ($q) use ($buscar) {
+                $q->where('num_identificacion', 'LIKE', "%{$buscar}%")
+                ->orWhere('name', 'LIKE', "%{$buscar}%")
+                ->orWhere('email', 'LIKE', "%{$buscar}%");
+            });
         }
 
         // Si el parámetro de paginación es verdadero

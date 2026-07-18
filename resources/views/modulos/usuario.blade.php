@@ -78,7 +78,6 @@
         <div class="position-relative mt-3">
             <div class="d-flex justify-content-center">
                 <select id="select_por_pagina" class="form-select" style="width:100px;">
-                    <option value="5">5</option>
                     <option value="10" selected>10</option>
                     <option value="20">20</option>
                 </select>
@@ -479,7 +478,6 @@
                     <div class="position-relative mt-3">
                         <div class="d-flex justify-content-center">
                             <select id="select_por_pagina_inactivo" class="form-select" style="width:100px;">
-                                <option value="5">5</option>
                                 <option value="10" selected>10</option>
                                 <option value="20">20</option>
                             </select>
