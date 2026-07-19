@@ -147,56 +147,11 @@ function guardar() {
                         });
                         const modal = bootstrap.Modal.getInstance(modalElement);
                         modal.hide();
-                        const tabla = document.getElementById('tabla_usuarios');
-                        const nuevaFila = `
-                            <tr id="fila_usuario_${result.data.id ?? ''}">
-                                <td>${result.data.num_identificacion}</td>
-                                <td>${nombre_completo}</td>
-                                <td>${email_guardado}</td>
-                                <td>${result.data.telefono}</td>
+                        listarUsuariosActivos(pagina_actual);
 
-                                <td class="text-center align-middle">
-                                    <i class="bx bx-check-circle" style="color:green;"></i>
-                                </td>
-
-                                <td class="text-center align-middle">
-                                    <a style="color: orange; cursor: pointer;"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalVer"
-                                        data-id="${result.data.id ?? ''}"
-                                        data-nombre="${nombre_completo}"
-                                        data-email="${email_guardado}"
-                                        data-estado=1
-                                        data-num_identificacion="${result.data.num_identificacion}"
-                                        data-direccion="${result.data.direccion}"
-                                        data-telefono="${result.data.telefono}"
-                                        data-genero="${result.data.nom_genero}"
-                                        data-tipo_identificacion="${result.data.cod_tipo_documento} - ${result.data.nom_tipo_documento}">
-                                        <i class="bx bx-show"></i>
-                                    </a>
-
-                                    <a style="color: purple; cursor: pointer;"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalActualizar"
-                                        data-id="${result.data.id ?? ''}"
-                                        data-nombre="${nombre_completo}"
-                                        data-email="${email_guardado}"
-                                        data-num_identificacion="${result.data.num_identificacion}"
-                                        data-direccion="${result.data.direccion}"
-                                        data-telefono="${result.data.telefono}"
-                                        data-genero="${result.data.id_genero}"
-                                        data-tipo_identificacion="${result.data.id_tipo_documento}">
-                                        <i class="bx bx-edit"></i>
-                                    </a>
-
-                                    <a style="color: red; cursor: pointer;"
-                                        data-id="${result.data.id ?? ''}"
-                                        onclick="eliminar_usuario(this)">
-                                        <i class="bx bx-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>`;
-                        tabla.insertAdjacentHTML('beforeend', nuevaFila);
+                        // llamando esta función se agregará de forma automática a la tabla sin necesidad de recargar la página.
+                        // esto debido que constantemente se está consultando del lado del servidor los resultados de la lista de usuarios activos.
+                        // Por lo que más adelante se ajustará automáticamente al paginador.
                     }
                 });
             }
@@ -307,56 +262,12 @@ function guardar_crear() {
                         });
                         /*const modal = bootstrap.Modal.getInstance(modalElement);
                         modal.hide();*/
-                        const tabla = document.getElementById('tabla_usuarios');
-                        const nuevaFila = `
-                            <tr id="fila_usuario_${result.data.id ?? ''}">
-                                <td>${result.data.num_identificacion}</td>
-                                <td>${nombre_completo}</td>
-                                <td>${email_guardado}</td>
-                                <td>${result.data.telefono}</td>
+                        listarUsuariosActivos(pagina_actual);
+                        // llamando esta función se agregará de forma automática a la tabla sin necesidad de recargar la página y podrás seguir agregando más información 
+                        // ya que en esta ocasión el modal se cerrará de forma automática del lado del usuario.
+                        // esto debido que constantemente se está consultando del lado del servidor los resultados de la lista de usuarios activos.
+                        // Por lo que más adelante se ajustará automáticamente al paginador.
 
-                                <td class="text-center align-middle">
-                                    <i class="bx bx-check-circle" style="color:green;"></i>
-                                </td>
-
-                                <td class="text-center align-middle">
-                                    <a style="color: orange; cursor: pointer;"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalVer"
-                                        data-id="${result.data.id ?? ''}"
-                                        data-nombre="${nombre_completo}"
-                                        data-email="${email_guardado}"
-                                        data-estado=1
-                                        data-num_identificacion="${result.data.num_identificacion}"
-                                        data-direccion="${result.data.direccion}"
-                                        data-telefono="${result.data.telefono}"
-                                        data-genero="${result.data.nom_genero}"
-                                        data-tipo_identificacion="${result.data.cod_tipo_documento} - ${result.data.nom_tipo_documento}">
-                                        <i class="bx bx-show"></i>
-                                    </a>
-
-                                    <a style="color: purple; cursor: pointer;"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#exampleModalActualizar"
-                                        data-id="${result.data.id ?? ''}"
-                                        data-nombre="${nombre_completo}"
-                                        data-email="${email_guardado}"
-                                        data-num_identificacion="${result.data.num_identificacion}"
-                                        data-direccion="${result.data.direccion}"
-                                        data-telefono="${result.data.telefono}"
-                                        data-genero="${result.data.id_genero}"
-                                        data-tipo_identificacion="${result.data.id_tipo_documento}">
-                                        <i class="bx bx-edit"></i>
-                                    </a>
-
-                                    <a style="color: red; cursor: pointer;"
-                                        data-id="${result.data.id ?? ''}"
-                                        onclick="eliminar_usuario(this)">
-                                        <i class="bx bx-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>`;
-                        tabla.insertAdjacentHTML('beforeend', nuevaFila);
                     } else {
                         return;
                     }
@@ -705,8 +616,8 @@ function eliminar_usuario(elemento) {
                             icon: "success",
                         });
 
-                        const fila = document.getElementById(`fila_usuario_${id_eliminar}`);
-                        if (fila) fila.remove();
+                        /*const fila = document.getElementById(`fila_usuario_${id_eliminar}`);
+                        if (fila) fila.remove(); */
 
                         const tabla = document.getElementById('tabla_usuarios_inactivos');
                         const nuevaFila = `
@@ -726,12 +637,20 @@ function eliminar_usuario(elemento) {
                                 </td>
                             </tr>`;
                         tabla.insertAdjacentHTML('beforeend', nuevaFila);
+
+                        /*const filas_actuales = document.querySelectorAll('#tabla_usuarios tr').length;
+
+                        if(filas_actuales === 1 && pagina_actual>1) {
+                            pagina_actual--;
+                        }*/
+                        listarUsuariosActivos(pagina_actual); //Se llaman estas funciones para la actualización del conteo de los respectivos paginadores.
+                        listarUsuariosInactivos(pagina_actual_inactivo); // el cuál se eliminará la fila de la tabla de usuarios activos y a su vez de forma automática se actualizará el paginador en la tabla de usuarios inactivos.
                     }
 
                 })
         }
     });
-    console.log("ID", id_eliminar);
+    
 }
 
 function restaurar_usuario(element) {
@@ -779,10 +698,10 @@ function restaurar_usuario(element) {
                             icon: "success",
                         });
 
-                        const fila = document.getElementById(`fila_usuario_inactivo_${id_restaurar}`);
-                        if (fila) fila.remove();
+                        /*const fila = document.getElementById(`fila_usuario_inactivo_${id_restaurar}`);
+                        if (fila) fila.remove();*/
 
-                        const tabla = document.getElementById('tabla_usuarios');
+                        /*const tabla = document.getElementById('tabla_usuarios');
                         const nuevaFila = `
                             <tr id="fila_usuario_${result.data.id ?? ''}">
                                 <td>${result.data.num_identificacion}</td> 
@@ -833,7 +752,10 @@ function restaurar_usuario(element) {
                             </td>
                                 </td>
                             </tr>`;
-                        tabla.insertAdjacentHTML('beforeend', nuevaFila);
+                        tabla.insertAdjacentHTML('beforeend', nuevaFila);*/
+
+                        listarUsuariosInactivos(pagina_actual_inactivo); //Se llaman estas funciones para la actualización del conteo de los respectivos paginadores.
+                        listarUsuariosActivos(pagina_actual); // el cuál se eliminará la fila de la tabla de usuarios activos y a su vez de forma automática se actualizará el paginador en la tabla de usuarios inactivos.
                     }
                 })
         }
@@ -846,8 +768,8 @@ function restaurar_usuario(element) {
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    renderPaginacion(paginadorInicial);
-    renderPaginacionInactivo(paginadorInicialInactivo)
+    listarUsuariosActivos(); // Se llaman las funciones para que constantemente se estén validando los paginadores.
+    listarUsuariosInactivos();
 
     let timeout_busqueda = null;
     let timeout_busqueda_inactivos = null;
@@ -905,6 +827,16 @@ function listarUsuariosActivos(page = 1) {
 
             if (result.status === 'success') {
 
+                if(pagina_actual>1 && pagina_actual > result.usuarios.last_page){
+                    pagina_actual = result.usuarios.last_page;
+                    listarUsuariosActivos(pagina_actual);
+                    return;
+
+                    // Se genera esta validación en caso de que al eliminar todos los registros de una página esta retorne a la página anterio.
+                    // y la página actual desaparecerá, cabe aclarar que esto únicamente aplicará si hay más de 1 página con registros, en caso
+                    // de que haya únicamente 1 página esta validación no se hará.
+                }
+
                 renderTabla(result.usuarios.data);
                 renderPaginacion(result.usuarios);
 
@@ -940,6 +872,16 @@ function listarUsuariosInactivos(page = 1) {
         .then(result => {
 
             if (result.status === 'success') {
+
+                if(pagina_actual_inactivo>1 && pagina_actual_inactivo > result.usuarios.last_page){
+                    pagina_actual_inactivo = result.usuarios.last_page;
+                    listarUsuariosInactivos(pagina_actual_inactivo);
+                    return;
+
+                    // Se genera esta validación en caso de que al eliminar todos los registros de una página esta retorne a la página anterio.
+                    // y la página actual desaparecerá, cabe aclarar que esto únicamente aplicará si hay más de 1 página con registros, en caso
+                    // de que haya únicamente 1 página esta validación no se hará.
+                }
 
                 renderTablaInactivo(result.usuarios.data);
                 renderPaginacionInactivo(result.usuarios);
