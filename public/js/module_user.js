@@ -999,7 +999,7 @@ function renderTablaInactivo(usuarios_inactivos) {
                 <td>${usuario_inactivo.telefono}</td>
 
                 <td class="text-center align-middle">
-                    '<i class="bx bx-x-circle" style="color:red;"></i>'
+                    <i class="bx bx-x-circle" style="color:red;"></i>
                 </td>
 
                 <td class="text-center align-middle">

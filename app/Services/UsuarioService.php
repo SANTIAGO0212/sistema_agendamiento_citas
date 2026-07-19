@@ -44,7 +44,8 @@ class UsuarioService
             $query->where(function ($q) use ($buscar) {
                 $q->where('num_identificacion', 'LIKE', "%{$buscar}%")
                 ->orWhere('name', 'LIKE', "%{$buscar}%")
-                ->orWhere('email', 'LIKE', "%{$buscar}%");
+                ->orWhere('email', 'LIKE', "%{$buscar}%")
+                ->orWhere('telefono', 'LIKE', "%{$buscar}%");
             });
         }
 
@@ -75,7 +76,8 @@ class UsuarioService
             $query->where(function ($q) use ($buscar) {
                 $q->where('num_identificacion', 'LIKE', "%{$buscar}%")
                 ->orWhere('name', 'LIKE', "%{$buscar}%")
-                ->orWhere('email', 'LIKE', "%{$buscar}%");
+                ->orWhere('email', 'LIKE', "%{$buscar}%")
+                ->orWhere('telefono', 'LIKE', "%{$buscar}%");
             });
         }
 
