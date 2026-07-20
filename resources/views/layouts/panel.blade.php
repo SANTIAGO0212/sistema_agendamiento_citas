@@ -61,7 +61,7 @@
                         <i class='bx bx-chevron-right arrow'></i>
                     </a>
 
-                    <a href="#">
+                    <a href="{{ route('modulos.sucursal') }}">
                         <i class='bx bx-store'></i>
                         <span>Sucursales</span>
                         <i class='bx bx-chevron-right arrow'></i>
