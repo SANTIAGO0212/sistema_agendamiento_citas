@@ -495,3 +495,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/module_user.js') }}"></script>
+@endpush

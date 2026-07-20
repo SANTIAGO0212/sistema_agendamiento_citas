@@ -138,7 +138,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{ asset('js/panel.js') }}"></script>
-    <script src="{{ asset('js/module_user.js') }}"></script>
     
     @stack('scripts')
     
