@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\SucursalService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\SucursalRequest;
+use App\Models\Sucursal;
 
 class SucursalController extends Controller
 {
@@ -14,6 +15,15 @@ class SucursalController extends Controller
     public function __construct(SucursalService $service)
     {
         $this->sucursalService = $service;
+    }
+
+    /**
+     * función para mostrar la vista del módulo
+     * @return JsonResponse
+     */
+    public function view() {
+        $sucursales = Sucursal::select('id', 'nombre', 'direccion', 'telefono')->where('estado', 1)->get();
+        return view('modulos.sucursal', compact('sucursales'));
     }
 
     /**
