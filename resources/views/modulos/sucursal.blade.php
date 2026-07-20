@@ -122,7 +122,7 @@
                         Cancelar</button>
                     <button type="button" id="btn_save_create" name="btn_save_create" class="btn btn-primary"
                         onclick="guardar_crear()"><i class="bx bx-save"></i> Guardar y crear</button>
-                    <button type="button" id="btn_save" name="btn_save" class="btn btn-primary" onclick="guardar()"><i
+                    <button type="button" id="btn_save" name="btn_save" class="btn btn-primary" onclick="guardar_sucursal()"><i
                             class="bx bx-save"></i> Guardar</button>
                 </div>
             </div>
@@ -212,3 +212,7 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script src="{{ asset('js/module_sucursales.js') }}"></script>
+@endpush
