@@ -7,6 +7,8 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\TipoDocumentoSeeder;
 use Database\Seeders\GeneroSeeder;
 use Database\Seeders\UserSeeder;
+use Database\Seeders\DepartamentoSeeder;
+use Database\Seeders\CiudadesSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,7 +22,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             TipoDocumentoSeeder::class,
             GeneroSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            DepartamentoSeeder::class,
+            CiudadesSeeder::class
         ]);
     }
 }
