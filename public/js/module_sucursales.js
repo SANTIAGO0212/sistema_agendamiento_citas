@@ -48,17 +48,17 @@ function guardar_sucursal() {
 
     // Validaciones
     if (!nombre.value.trim()) {
-        marcarError(nombre, 'El primer nombre es obligatorio');
+        marcarError(nombre, 'El nombre de la sucursal es obligatorio');
         hayErrores = true;
     }
 
     if (!telefono.value.trim()) {
-        marcarError(correo, 'El correo es obligatorio');
+        marcarError(telefono, 'El teléfono de la sucursal es obligatorio');
         hayErrores = true;
     }
 
     if (!direccion.value.trim()) {
-        marcarError(correo, 'El correo es obligatorio');
+        marcarError(direccion, 'La dirección de la sucursal es obligatorio');
         hayErrores = true;
     }
 
@@ -70,7 +70,7 @@ function guardar_sucursal() {
             'Accept': 'application/json'
         },
         body: JSON.stringify({
-            nombre: nombre.trim(),
+            nombre: nombre.value.trim(),
             telefono: telefono.value.trim(),
             direccion: direccion.value.trim()
         })
@@ -141,7 +141,7 @@ function guardar_crear() {
     }
 
     if (!direccion.value.trim()) {
-        marcarError(correo, 'La dirección de la sucursal es obligatoria');
+        marcarError(direccion, 'La dirección de la sucursal es obligatoria');
         hayErrores = true;
     }
 
@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Obtener datos del botón
         const id = button.getAttribute('data-id');
         const nombre_ver = button.getAttribute('data-nombre');
-        const direccion = button.getAttribute('data-direccion');
+        const direccion_ver = button.getAttribute('data-direccion');
         const telefono_ver = button.getAttribute('data-telefono');
         let estado = button.getAttribute('data-estado');
 
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('id_sucursal_ver').value = id;
         document.getElementById('nombre_ver').value = nombre_ver || 'N/A';
         document.getElementById('estado_ver').value = estado;
-        document.getElementById('direccion_ver').value = direccion;
+        document.getElementById('direccion_ver').value = direccion_ver;
         document.getElementById('telefono_ver').value = telefono_ver;
 
     });
@@ -271,9 +271,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function actualizar() {
 
-    const nombre = document.getElementById('nombre_actualizar');
+    const nombre_actualizar = document.getElementById('nombre_actualizar');
     const telefono_actualizar = document.getElementById('telefono_actualizar');
-    const direccion = document.getElementById('direccion_actualizar');
+    const direccion_actualizar = document.getElementById('direccion_actualizar');
 
 
     if (!token) {
@@ -283,21 +283,21 @@ function actualizar() {
     }
 
     // Limpiar errores antes de validar
-    [nombre, telefono_actualizar, direccion].forEach(limpiarError);
+    [nombre_actualizar, telefono_actualizar, direccion_actualizar].forEach(limpiarError);
 
     // Validaciones
-    if (!nombre.value.trim()) {
-        marcarError(nombre, 'El primer nombre es obligatorio');
+    if (!nombre_actualizar.value.trim()) {
+        marcarError(nombre_actualizar, 'El primer nombre es obligatorio');
         hayErrores = true;
     }
 
-    if (!telefono.value.trim()) {
-        marcarError(telefono, 'El correo es obligatorio');
+    if (!telefono_actualizar.value.trim()) {
+        marcarError(telefono_actualizar, 'El correo es obligatorio');
         hayErrores = true;
     }
 
-    if (!direccion.value.trim()) {
-        marcarError(direccion, 'El correo es obligatorio');
+    if (!direccion_actualizar.value.trim()) {
+        marcarError(direccion_actualizar, 'El correo es obligatorio');
         hayErrores = true;
     }
 
@@ -311,8 +311,8 @@ function actualizar() {
             'Accept': 'application/json'
         },
         body: JSON.stringify({
-            nombre: nombre.trim(),
-            direccion: direccion.value.trim(),
+            nombre: nombre_actualizar.value.trim(),
+            direccion: direccion_actualizar.value.trim(),
             telefono: telefono_actualizar.value.trim(),
         })
     })
@@ -349,37 +349,28 @@ function actualizar() {
                         const modal_editar = bootstrap.Modal.getInstance(modalElementActualizar);
                         modal_editar.hide();
                         //const tabla = document.getElementById('tabla_usuarios');
-                        const fila = document.getElementById(`fila_usuario_${id}`);
+                        const fila = document.getElementById(`fila_sucursal_${id}`);
 
                         if (fila) {
-                            fila.children[0].textContent = result.data.num_identificacion;
-                            fila.children[1].textContent = nombre_completo.trim();
-                            fila.children[2].textContent = correo.value.trim();
-                            fila.children[3].textContent = result.data.telefono;
+                            fila.children[0].textContent = nombre_actualizar.value.trim();
+                            fila.children[1].textContent = direccion_actualizar.value.trim();
+                            fila.children[2].textContent = telefono_actualizar.value.trim();
                         }
 
                         const btnEditar = fila.querySelector('[data-bs-target="#exampleModalActualizar"]');
 
                         if (btnEditar) {
-                            btnEditar.setAttribute('data-nombre', nombre_completo.trim());
-                            btnEditar.setAttribute('data-email', correo.value.trim());
-                            btnEditar.setAttribute('data-num_identificacion', result.data.num_identificacion);
-                            btnEditar.setAttribute('data-direccion', result.data.direccion);
-                            btnEditar.setAttribute('data-telefono', result.data.telefono);
-                            btnEditar.setAttribute('data-tipo_identificacion', result.data.id_tipo_documento);
-                            btnEditar.setAttribute('data-genero', result.data.id_genero);
+                            btnEditar.setAttribute('data-nombre', nombre_actualizar.value.trim());
+                            btnEditar.setAttribute('data-direccion', direccion_actualizar.value.trim());
+                            btnEditar.setAttribute('data-telefono', telefono_actualizar.value.trim());
                         }
 
                         const btnVer = fila.querySelector('[data-bs-target="#exampleModalVer"]');
 
                         if (btnVer) {
-                            btnVer.setAttribute('data-nombre', nombre_completo.trim());
-                            btnVer.setAttribute('data-email', correo.value.trim());
-                            btnVer.setAttribute('data-telefono', result.data.telefono);
-                            btnVer.setAttribute('data-direccion', result.data.direccion);
-                            btnVer.setAttribute('data-num_identificacion', result.data.num_identificacion);
-                            btnVer.setAttribute('data-genero', result.data.nom_genero);
-                            btnVer.setAttribute('data-tipo_identificacion', result.data.cod_tipo_documento + ' - ' + result.data.nom_tipo_documento);
+                            btnVer.setAttribute('data-nombre', nombre_actualizar.value.trim());
+                            btnVer.setAttribute('data-telefono', telefono_actualizar.value.trim());
+                            btnVer.setAttribute('data-direccion', direccion_actualizar.value.trim());
                         }
                     }
                 });
@@ -406,7 +397,7 @@ function eliminar_sucursal(elemento) {
         denyButtonText: `Cancelar`
     }).then((responseSwal) => {
         if (responseSwal.isConfirmed) {
-            fetch(`/usuarios/${id_eliminar}`, {
+            fetch(`/sucursales/${id_eliminar}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -441,14 +432,13 @@ function eliminar_sucursal(elemento) {
                             pagina_actual--;
                         }*/
                         listarSucursales(pagina_actual); //Se llaman estas funciones para la actualización del conteo de los respectivos paginadores.
-                                                             // el cuál se eliminará la fila de la tabla de usuarios activos y a su vez de forma automática se actualizará el paginador en la tabla de usuarios inactivos.
+                                                         // el cuál se eliminará la fila de la tabla de usuarios activos y a su vez de forma automática se actualizará el paginador en la tabla de usuarios inactivos.
                     }
                 })
         }
     });
     
 }
-
 
 // PROCESO PARA EL LISTAR Y LA PAGINACIÓN
 
@@ -530,7 +520,7 @@ function renderTabla(sucursales) {
     if(sucursales.length === 0) {
         tabla.innerHTML = `
            <tr>
-             <td colspan = "6" class="text-center text-muted py-2">
+             <td colspan = "5" class="text-center text-muted py-2">
                No hay resultados en este momento.
              </td>
            </tr>
@@ -539,17 +529,16 @@ function renderTabla(sucursales) {
         return;
     }
 
-    usuarios.forEach(sucursal => {
+    sucursales.forEach(sucursal => {
 
         let estadoIcono = sucursal.estado == 1
             ? '<i class="bx bx-check-circle" style="color:green;"></i>'
             : '<i class="bx bx-x-circle" style="color:red;"></i>';
 
         tabla.innerHTML += `
-            <tr id="fila_usuario_${sucursal.id}">
-                <td>${sucursal.num_identificacion}</td>
-                <td>${sucursal.name}</td>
-                <td>${sucursal.email}</td>
+            <tr id="fila_sucursal_${sucursal.id}">
+                <td>${sucursal.nombre}</td>
+                <td>${sucursal.direccion}</td>
                 <td>${sucursal.telefono}</td>
 
                 <td class="text-center align-middle">
@@ -582,7 +571,7 @@ function renderTabla(sucursales) {
 
                     <a style="color: red; cursor: pointer;"
                         data-id="${sucursal.id}"
-                        onclick="eliminar_usuario(this)">
+                        onclick="eliminar_sucursal(this)">
                         <i class="bx bx-trash"></i>
                     </a>
 
@@ -632,3 +621,120 @@ function renderPaginacion(paginador) {
 
     contenedor.innerHTML = botones;
 }
+
+// GEOLOCALIZACIÓN
+
+let map;
+let marker;
+
+let latitud;
+let longitud;
+
+const modalMapa = document.getElementById('abrirModalMapa');
+
+modalMapa.addEventListener('show.bs.modal', function () {
+    if(!map) {
+        map = L.map('map');
+
+        map.setView([6.2441, -75.5812], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap'}).addTo(map);
+
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(posicion) {
+                latitud = posicion.coords.latitude;
+                longitud = posicion.coords.longitude;
+                
+                map.setView([latitud,longitud],17);
+
+                marker = L.marker([latitud,longitud], {draggable:true}).addTo(map);
+
+                marker.on('dragend', function(e) {
+                    latitud = e.target.getLatLng().lat;
+                    longitud = e.target.getLatLng().lng;
+                });
+            });
+        }
+
+        map.on('click', function(e) {
+            latitud = e.latlng.lat;
+            longitud = e.latlng.lng;
+
+            if(marker) {
+                marker.setLatLng(e.latlng);
+            }else {
+                marker = L.marker(e.latlng, {draggable:true}).addTo(map);
+
+                marker.on('dragend', function(e) {
+                    latitud = e.target.getLatLng().lat;
+                    longitud = e.target.getLatLng().lng;
+                });
+            }
+        });
+    }
+
+    setTimeout(function() {
+        map.invalidateSize();
+    }, 300)
+});
+
+document.getElementById('guardarDireccion').addEventListener("click", function() {
+    if(!latitud) {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "warning",
+            title: "Por favor, seleccione una nueva ubicación."
+        })
+
+        return;
+    }
+
+    document.querySelectorAll(".latitud").value = latitud;
+    document.querySelectorAll(".longitud").value = longitud;
+
+    fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitud}&lon=${longitud}`)
+        .then(response=> response.json())
+        .then(data => {
+            let direccion_precisa = data.address.road ?? "";
+
+            if(data.address.house_number) {
+                direccion_precisa += "#" + data.address.house_number;
+            }else {
+                direccion_precisa += ',' + data.address.neighbourhood + ',' + data.address.suburb;
+            }
+
+            document.getElementById("direccion").value = direccion_precisa;
+            document.getElementById("direccion_actualizar").value = direccion_precisa
+            //document.getElementById("direccion").value = data.address.road + '#' + data.address.house_number;
+
+            //bootstrap.Modal.getInstance('abrirModalMapa').hide();
+            const modalMaps = bootstrap.Modal.getOrCreateInstance(document.getElementById('abrirModalMapa'));
+            modalMaps.hide();
+
+            document.body.classList.add('modal-open');
+        });
+});
+
+document.querySelectorAll(".btnAbrirMapa").forEach(btn => {
+    btn.addEventListener("click", function() {
+        const modalMapas = new bootstrap.Modal(document.getElementById("abrirModalMapa"),{
+            backdrop: 'static',
+            keyboard: false
+        });
+
+        modalMapas.show();
+        document.body.classList.add('modal-open');
+
+        setTimeout(() => {map?.invalidateSize},300);
+    });
+});

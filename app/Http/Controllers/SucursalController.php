@@ -34,7 +34,7 @@ class SucursalController extends Controller
     {
         try {
             $buscar = $request->get('buscar');
-            $porPagina = $request->get('porPagina', 10);
+            $porPagina = $request->get('porPagina', 5);
 
             $sucursales = $this->sucursalService->listar($buscar, $porPagina);
             

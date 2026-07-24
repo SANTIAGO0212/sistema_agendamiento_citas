@@ -36,44 +36,14 @@
                 </tr>
             </thead>
             <tbody id="tabla_sucursales">
-                @foreach($sucursales as $sucursal)
-                    <tr id="fila_sucursal_{{ $sucursal['id'] }}">
-                        
-                        <td>{{ $sucursal['nombre'] }}</td>
-                        <td>{{ $sucursal['direccion'] }}</td>
-                        <td>{{ $sucursal['telefono'] }}</td>
-                        @if ($sucursal['estado'] === 1)
-                            <td class="text-center align-middle"><i class="bx bx-check-circle" style="color:green;"></i></td>
-                        @endif
-                        <td class="text-center align-middle">
 
-                            agregar
-                            <!--<a style="color: orange; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#exampleModalVer"
-                                data-id="{{ $usuario['id'] }}" data-nombre="{{ $usuario['name'] }}"
-                                data-email="{{ $usuario['email'] }}" data-estado="{{ $usuario['estado'] }}"
-                                data-num_identificacion="{{ $usuario['num_identificacion'] }}"
-                                data-direccion="{{ $usuario['direccion'] }}" data-telefono="{{ $usuario['telefono'] }}"
-                                data-tipo_identificacion="{{ $usuario->tipoDocumento->cod_tipo_documento }} - {{ $usuario->tipoDocumento->nom_tipo_documento }}"
-                                data-genero="{{ $usuario->genero->nom_genero }}"><i class="bx bx-show"></i></a>
-                            <a style="color: purple; cursor: pointer;" data-bs-toggle="modal"
-                                data-bs-target="#exampleModalActualizar" data-id="{{ $usuario['id'] }}"
-                                data-nombre="{{ $usuario['name'] }}" data-email="{{ $usuario['email'] }}"
-                                data-estado="{{ $usuario['estado'] }}"
-                                data-num_identificacion="{{ $usuario['num_identificacion'] }}"
-                                data-direccion="{{ $usuario['direccion'] }}" data-telefono="{{ $usuario['telefono'] }}"
-                                data-tipo_identificacion="{{ $usuario['id_tipo_documento'] }}"
-                                data-genero="{{ $usuario['id_genero'] }}"><i class="bx bx-edit"></i></a>
-                            <a style="color: red; cursor: pointer;" data-id="{{ $usuario['id'] }}"
-                                onclick="eliminar_usuario(this)"><i class="bx bx-trash"></i></a>-->
-                        </td>
-                    </tr>
-                @endforeach
             </tbody>
         </table>
         <div class="position-relative mt-3">
             <div class="d-flex justify-content-center">
                 <select id="select_por_pagina" class="form-select" style="width:100px;">
-                    <option value="10" selected>10</option>
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
                     <option value="20">20</option>
                 </select>
             </div>
@@ -105,8 +75,17 @@
                             <div class="col-md-4">
                                 <label for="direccion_label mb-2">Dirección <span style="color:red;">*</span>
                                 </label>
-                                <input type="text" id="direccion" name="direccion" class="form-control"
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" id="direccion" name="direccion" class="form-control"
                                     placeholder="Ingrese la dirección de la sucursal" required>
+
+                                    <button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>
+                                </div>
+
+                                <input type="hidden" class="latitud">
+
+                                <input type="hidden" class="longitud">
                             </div>
 
                             <div class="col-md-4">
@@ -141,23 +120,23 @@
                     <form id="form_create">
 
                         <div class="row g-3 mb-3">
-                            <input type="text" id="id_user_ver" name="id_user_ver" disabled hidden>
+                            <input type="text" id="id_sucursal_ver" name="id_sucursal_ver" disabled hidden>
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-md-4">
                                 <label for="nombre_sucursal_label mb-2">Nombre sucursal </label>
-                                <input type="text" id="nombre_ver" name="nombre" class="form-control" required>
+                                <input type="text" id="nombre_ver" name="nombre" class="form-control" disabled>
                             </div>
 
                             <div class="col-md-4">
                                 <label for="direccion_label mb-2">Dirección </label>
-                                <input type="text" id="direccion_ver" name="direccion" class="form-control" required>
+                                <input type="text" id="direccion_ver" name="direccion" class="form-control" disabled>
                             </div>
 
                             <div class="col-md-4">
                                 <label for="telefono_label mb-2">Teléfono </label>
-                                <input type="text" id="telefono_ver" name="telefono_ver" class="form-control">
+                                <input type="text" id="telefono_ver" name="telefono_ver" class="form-control" disabled>
                             </div>
 
                             <div class="col-md-4">
@@ -177,7 +156,7 @@
     </div>
 
     {{-- Modal Actualizar --}}
-    <div class="modal fade" id="exampleModalActualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
+   <div class="modal fade" id="exampleModalActualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -188,16 +167,41 @@
                 <div class="modal-body">
                     <form method="post" id="form_create">
                         @csrf
-
                         <div class="row g-3 mb-3">
-                            <input type="hidden" id="id_user_actualizar" name="id_user_actualizar">
+                            <input type="hidden" id="id_sucursal_actualizar" name="id_sucursal_actualizar">
+                        </div>
+
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-4">
+                                <label for="nombre_sucursal_label mb-2">Nombre sucursal <span
+                                        style="color:red;">*</span></label>
+                                <input type="text" id="nombre_actualizar" name="nombre_actualizar" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="direccion_label mb-2">Dirección <span style="color:red;">*</span></label>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" id="direccion_actualizar" name="direccion_actualizar" class="form-control direccion" required>
+
+                                    <button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>
+                                </div>
+
+                                <input type="hidden" class="latitud">
+
+                                <input type="hidden" class="longitud">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="telefono_label mb-2">Teléfono <span style="color:red;">*</span></label>
+                                <input type="text" id="telefono_actualizar" name="telefono_actualizar" class="form-control">
+                            </div>
                         </div>
 
                         <div class="row g-3 mb-3">
                             <div class="col-md-2" hidden>
                                 <label for="estado_label mb-2">Estado</label>
-                                <input type="text" id="estado_actualizar" name="estado_actualizar" class="form-control"
-                                    disabled>
+                                <input type="text" id="estado_actualizar" name="estado_actualizar" class="form-control" disabled>
                             </div>
                         </div>
                     </form>
@@ -211,8 +215,29 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Abrir Geolocalización --}}
+    <div class="modal fade" id="abrirModalMapa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Seleccionar Ubicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="map" style="height:300px;">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="guardarDireccion" class="btn btn-dark">Seleccionar</button>
+            </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
     <script src="{{ asset('js/module_sucursales.js') }}"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 @endpush

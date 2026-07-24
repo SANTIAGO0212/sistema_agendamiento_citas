@@ -25,14 +25,17 @@ class SucursalService
      * @param int $porPagina
      */
 
-    public function listar(?string $buscar = null, int $porPagina = 10)
+    public function listar(?string $buscar = null, int $porPagina = 5)
     {
-        $query = Sucursal::query();
+        $query = Sucursal::select('id', 'nombre', 'direccion', 'telefono', 'estado')->where('estado',1);
 
         // Si hay filtro, aplica búsqueda
         if (!empty($buscar)) {
-            $query->where('nombre', 'LIKE', "%{$buscar}%")
-                ->orWhere('direccion', 'LIKE', "%{$buscar}%");
+            $query->where(function ($q) use ($buscar) {
+                $q->where('nombre', 'LIKE', "%{$buscar}%")
+                ->orWhere('direccion', 'LIKE', "%{$buscar}%")
+                ->orWhere('telefono', 'LIKE', "%{$buscar}%");
+            });
         }
 
         // Si el parámetro de paginación es verdadero
@@ -80,7 +83,10 @@ class SucursalService
     public function eliminar(int $id)
     {
         $sucursal = Sucursal::findOrFail($id);
-        return $sucursal->delete();
+        $sucursal->estado = 0;
+        $sucursal->save();
+
+        return $sucursal;
     }
 
     /**
