@@ -7,6 +7,8 @@ use App\Services\SucursalService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\SucursalRequest;
 use App\Models\Sucursal;
+use App\Models\Departamentos;
+use App\Models\Ciudades;
 
 class SucursalController extends Controller
 {
@@ -23,7 +25,9 @@ class SucursalController extends Controller
      */
     public function view() {
         $sucursales = Sucursal::select('id', 'nombre', 'direccion', 'telefono')->where('estado', 1)->get();
-        return view('modulos.sucursal', compact('sucursales'));
+        $departamentos = Departamentos::select('id', 'cod_departamento', 'nom_departamento')->where('estado', 1)->get();
+        $ciudades = Ciudades::select('id', 'cod_ciudad', 'nom_ciudad')->where('estado', 1)->get();
+        return view('modulos.sucursal', compact('sucursales', 'departamentos', 'ciudades'));
     }
 
     /**
@@ -61,7 +65,7 @@ class SucursalController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'La sucursal fue ingresada correctamente',
-                'sucursal' => $sucursal
+                'sucursal' => $sucursal,
             ], 201);
         } catch (\Exception $e) {
             return response()->json([

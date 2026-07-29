@@ -27,7 +27,20 @@ class SucursalService
 
     public function listar(?string $buscar = null, int $porPagina = 5)
     {
-        $query = Sucursal::select('id', 'nombre', 'direccion', 'telefono', 'estado')->where('estado',1);
+        $query = Sucursal::query()
+        ->leftJoin('ciudades', 'sucursales.id_ciudad', '=', 'ciudades.id')
+        ->leftJoin('departamentos', 'sucursales.id_departamento', '=', 'departamentos.id')
+        ->select('sucursales.id',
+                 'sucursales.nombre', 
+                 'sucursales.direccion', 
+                 'sucursales.telefono', 
+                 'sucursales.estado',
+                 'sucursales.id_departamento',
+                 'sucursales.id_ciudad',
+                 'departamentos.cod_departamento',
+                 'departamentos.nom_departamento',
+                 'ciudades.cod_ciudad',
+                 'ciudades.nom_ciudad')->where('sucursales.estado',1);
 
         // Si hay filtro, aplica búsqueda
         if (!empty($buscar)) {
