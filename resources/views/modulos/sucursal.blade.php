@@ -2,7 +2,7 @@
 
 @section('content')
 
-    {{-- LISTAR USUARIO--}}
+    {{-- LISTAR SUCURSALES--}}
     <div class="card mt-4 p-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h6 class="mb-0">Sucursales</h6>
@@ -57,52 +57,84 @@
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
+
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Agregar sucursales</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Agregar sucursales
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
+
                 <div class="modal-body">
+
                     <form method="post" id="form_create">
                         @csrf
-                        <div class="row g-4 mb-4">
-                            <div class="col-md-4">
-                                <label for="nombre_sucursal_label mb-2">Nombre sucursal <span
-                                        style="color:red;">*</span></label>
-                                <input type="text" id="nombre" name="nombre" class="form-control"
-                                    placeholder="Ingrese el nombre de la sucursal" required>
+                        <div class="row g-3 mb-3">
+                            <!-- Nombre -->
+                            <div class="col-md-6">
+                                <label for="nombre_sucursal_label" class="form-label">Nombre sucursal <span class="text-danger">*</span></label>
+                                <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ingrese el nombre de la sucursal" required>
                             </div>
-
-                            <div class="col-md-4">
-                                <label for="direccion_label mb-2">Dirección <span style="color:red;">*</span>
-                                </label>
-
+                            <!-- Dirección -->
+                            <div class="col-md-6">
+                                <label for="direccion_label" class="form-label"> Dirección <span class="text-danger">*</span></label>
                                 <div class="d-flex align-items-center gap-2">
-                                    <input type="text" id="direccion" name="direccion" class="form-control"
-                                    placeholder="Ingrese la dirección de la sucursal" required>
-
+                                    <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Ingrese la dirección de la sucursal" required>
                                     <button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>
                                 </div>
-
                                 <input type="hidden" class="latitud">
-
                                 <input type="hidden" class="longitud">
                             </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <!-- Departamento -->
+                            <div class="col-md-6">
+                                <label for="departamento_label" class="form-label">Departamento <span class="text-danger">*</span></label>
+                                <select
+                                    id="departamento" name=" departamento" class="form-control" required>
+                                    <option selected>Seleccione</option>
+                                    @foreach ($departamentos as $departamento)
+                                        <option value="{{ $departamento->id }}">
+                                            {{ $departamento->cod_departamento }}
+                                            -
+                                            {{ $departamento->nom_departamento }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <!-- Ciudad -->
+                            <div class="col-md-6">
+                                <label for="ciudad_label" class="form-label">Ciudad <span class="text-danger">*</span></label>
+                                <select
+                                    id="ciudad" name="ciudad" class="form-control" required>
+                                    <option selected>Seleccione</option>
+                                    @foreach ($ciudades as $ciudad)
+                                        <option value="{{ $ciudad->id }}">
+                                            {{ $ciudad->cod_ciudad }}
+                                            -
+                                            {{ $ciudad->nom_ciudad }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
-                            <div class="col-md-4">
-                                <label for="segundo_nombre_label mb-2">Teléfono <span style="color:red;">*</span></label>
-                                <input type="text" id="telefono" name="telefono" class="form-control"
-                                    placeholder="Ingrese el número de teléfono">
+                        <div class="row g-3">
+
+                            <!-- Teléfono -->
+                            <div class="col-md-6">
+                                <label for="telefono" class="form-label">Teléfono <span class="text-danger">*</span></label>
+                                <input type="number"id="telefono"name="telefono"class="form-control"placeholder="Ingrese el número de teléfono" required>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i>
-                        Cancelar</button>
-                    <button type="button" id="btn_save_create" name="btn_save_create" class="btn btn-primary"
-                        onclick="guardar_crear()"><i class="bx bx-save"></i> Guardar y crear</button>
-                    <button type="button" id="btn_save" name="btn_save" class="btn btn-primary" onclick="guardar_sucursal()"><i
-                            class="bx bx-save"></i> Guardar</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i> Cancelar</button>
+                    <button type="button" id="btn_save_create" name="btn_save_create" class="btn btn-primary" onclick="guardar_crear()"><i class="bx bx-save"></i>Guardar y crear</button>
+                    <button type="button" id="btn_save" name="btn_save" class="btn btn-primary" onclick="guardar_sucursal()"><i class="bx bx-save"></i>Guardar</button>
                 </div>
             </div>
         </div>
@@ -110,46 +142,50 @@
 
     {{-- Modal Ver --}}
     <div class="modal fade" id="exampleModalVer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ver información</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="form_create">
-
                         <div class="row g-3 mb-3">
                             <input type="text" id="id_sucursal_ver" name="id_sucursal_ver" disabled hidden>
                         </div>
-
                         <div class="row g-3 mb-3">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="nombre_sucursal_label mb-2">Nombre sucursal </label>
                                 <input type="text" id="nombre_ver" name="nombre" class="form-control" disabled>
                             </div>
-
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="direccion_label mb-2">Dirección </label>
                                 <input type="text" id="direccion_ver" name="direccion" class="form-control" disabled>
                             </div>
-
-                            <div class="col-md-4">
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="nombre_sucursal_label mb-2">Departamento </label>
+                                <input type="text" id="departamento_ver" name="nombre" class="form-control" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="direccion_label mb-2">Ciudad </label>
+                                <input type="text" id="ciudad_ver" name="direccion" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
                                 <label for="telefono_label mb-2">Teléfono </label>
                                 <input type="text" id="telefono_ver" name="telefono_ver" class="form-control" disabled>
                             </div>
-
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="estado_label mb-2">Estado</label>
                                 <input type="text" id="estado_ver" name="estado_ver" class="form-control" disabled>
                             </div>
                         </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <!--<button type="button" class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#exampleModalRestaurar"><i class="bx bx-arrow-from-right fs-2"></i> Regresar</button>-->
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i>
-                        Cancelar</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i>Cancelar</button>
                 </div>
             </div>
         </div>

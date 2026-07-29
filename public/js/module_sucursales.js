@@ -2,6 +2,8 @@
 const nombre = document.getElementById('nombre');
 const telefono = document.getElementById('telefono');
 const direccion = document.getElementById('direccion');
+const departamento = document.getElementById('departamento');
+const ciudad = document.getElementById('ciudad');
 const id_sucursal = document.getElementById('id_sucursal_actualizar');
 const formulario_create = document.getElementById('form_create');
 const modalElement = document.getElementById('exampleModal');
@@ -44,7 +46,7 @@ function guardar_sucursal() {
     }
 
     // Limpiar errores antes de validar
-    [nombre, direccion, telefono].forEach(limpiarError);
+    [nombre, direccion, telefono, departamento, ciudad].forEach(limpiarError);
 
     // Validaciones
     if (!nombre.value.trim()) {
@@ -62,6 +64,16 @@ function guardar_sucursal() {
         hayErrores = true;
     }
 
+    if (!departamento.value.trim()  || departamento.value.trim() === 'Seleccione') {
+        marcarError(departamento, 'El departamento de la sucursal es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!ciudad.value.trim() || ciudad.value.trim() === 'Seleccione') {
+        marcarError(ciudad, 'La ciudad de la sucursal es obligatorio');
+        hayErrores = true;
+    }
+
     fetch('/sucursales', {
         method: 'POST',
         headers: {
@@ -72,7 +84,9 @@ function guardar_sucursal() {
         body: JSON.stringify({
             nombre: nombre.value.trim(),
             telefono: telefono.value.trim(),
-            direccion: direccion.value.trim()
+            direccion: direccion.value.trim(),
+            id_departamento: departamento.value.trim(),
+            id_ciudad: ciudad.value.trim()
         })
     })
         .then(response => {
@@ -126,7 +140,7 @@ function guardar_crear() {
     }
 
     // Limpiar errores antes de validar
-    [nombre, direccion, telefono].forEach(limpiarError);
+    [nombre, direccion, telefono, departamento, ciudad].forEach(limpiarError);
 
     // Validaciones
 
@@ -145,6 +159,16 @@ function guardar_crear() {
         hayErrores = true;
     }
 
+    if (!departamento.value.trim()  || departamento.value.trim() === 'Seleccione') {
+        marcarError(departamento, 'El departamento de la sucursal es obligatorio');
+        hayErrores = true;
+    }
+
+    if (!ciudad.value.trim() || ciudad.value.trim() === 'Seleccione') {
+        marcarError(ciudad, 'La ciudad de la sucursal es obligatorio');
+        hayErrores = true;
+    }
+
     fetch('/sucursales', {
         method: 'POST',
         headers: {
@@ -155,7 +179,9 @@ function guardar_crear() {
         body: JSON.stringify({
             nombre: nombre.value.trim(),
             telefono: telefono.value.trim(),
-            direccion: direccion.value.trim()
+            direccion: direccion.value.trim(),
+            id_departamento: departamento.value.trim(),
+            id_ciudad: ciudad.value.trim(),
         })
     })
         .then(response => {
@@ -217,6 +243,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const nombre_ver = button.getAttribute('data-nombre');
         const direccion_ver = button.getAttribute('data-direccion');
         const telefono_ver = button.getAttribute('data-telefono');
+        const departamento_ver = button.getAttribute('data-departamento');
+        const ciudad_ver = button.getAttribute('data-ciudad');
         let estado = button.getAttribute('data-estado');
 
         // Separar nombre (opcional si lo tienes concatenado)
@@ -235,6 +263,8 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('estado_ver').value = estado;
         document.getElementById('direccion_ver').value = direccion_ver;
         document.getElementById('telefono_ver').value = telefono_ver;
+        document.getElementById('departamento_ver').value = departamento_ver;
+        document.getElementById('ciudad_ver').value = ciudad_ver;
 
     });
 });
@@ -554,6 +584,8 @@ function renderTabla(sucursales) {
                         data-nombre="${sucursal.nombre}"
                         data-direccion="${sucursal.direccion}"
                         data-telefono="${sucursal.telefono}"
+                        data-departamento = "${sucursal.cod_departamento} - ${sucursal.nom_departamento}"
+                        data-ciudad = "${sucursal.cod_ciudad} - ${sucursal.nom_ciudad}"
                         data-estado="1">
                         <i class="bx bx-show"></i>
                     </a>
