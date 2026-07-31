@@ -25,9 +25,7 @@ class SucursalController extends Controller
      */
     public function view() {
         $sucursales = Sucursal::select('id', 'nombre', 'direccion', 'telefono')->where('estado', 1)->get();
-        $departamentos = Departamentos::select('id', 'cod_departamento', 'nom_departamento')->where('estado', 1)->get();
-        $ciudades = Ciudades::select('id', 'cod_ciudad', 'nom_ciudad')->where('estado', 1)->get();
-        return view('modulos.sucursal', compact('sucursales', 'departamentos', 'ciudades'));
+        return view('modulos.sucursal', compact('sucursales'));
     }
 
     /**

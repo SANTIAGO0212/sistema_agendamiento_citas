@@ -26,8 +26,6 @@ class SucursalRequest extends FormRequest
             'direccion' => 'required|string|max:80',
             'telefono' => 'required|string|max:50',
             'estado' => 'boolean',
-            'id_departamento' => 'integer|exists:departamentos,id',
-            'id_ciudad' => 'integer|exists:ciudades,id'
         ];
     }
 }
