@@ -2,8 +2,6 @@
 const nombre = document.getElementById('nombre');
 const telefono = document.getElementById('telefono');
 const direccion = document.getElementById('direccion');
-const departamento = document.getElementById('departamento');
-const ciudad = document.getElementById('ciudad');
 const id_sucursal = document.getElementById('id_sucursal_actualizar');
 const formulario_create = document.getElementById('form_create');
 const modalElement = document.getElementById('exampleModal');
@@ -46,7 +44,7 @@ function guardar_sucursal() {
     }
 
     // Limpiar errores antes de validar
-    [nombre, direccion, telefono, departamento, ciudad].forEach(limpiarError);
+    [nombre, direccion, telefono].forEach(limpiarError);
 
     // Validaciones
     if (!nombre.value.trim()) {
@@ -64,16 +62,6 @@ function guardar_sucursal() {
         hayErrores = true;
     }
 
-    if (!departamento.value.trim()  || departamento.value.trim() === 'Seleccione') {
-        marcarError(departamento, 'El departamento de la sucursal es obligatorio');
-        hayErrores = true;
-    }
-
-    if (!ciudad.value.trim() || ciudad.value.trim() === 'Seleccione') {
-        marcarError(ciudad, 'La ciudad de la sucursal es obligatorio');
-        hayErrores = true;
-    }
-
     fetch('/sucursales', {
         method: 'POST',
         headers: {
@@ -85,8 +73,6 @@ function guardar_sucursal() {
             nombre: nombre.value.trim(),
             telefono: telefono.value.trim(),
             direccion: direccion.value.trim(),
-            id_departamento: departamento.value.trim(),
-            id_ciudad: ciudad.value.trim()
         })
     })
         .then(response => {
@@ -140,7 +126,7 @@ function guardar_crear() {
     }
 
     // Limpiar errores antes de validar
-    [nombre, direccion, telefono, departamento, ciudad].forEach(limpiarError);
+    [nombre, direccion, telefono].forEach(limpiarError);
 
     // Validaciones
 
@@ -159,16 +145,6 @@ function guardar_crear() {
         hayErrores = true;
     }
 
-    if (!departamento.value.trim()  || departamento.value.trim() === 'Seleccione') {
-        marcarError(departamento, 'El departamento de la sucursal es obligatorio');
-        hayErrores = true;
-    }
-
-    if (!ciudad.value.trim() || ciudad.value.trim() === 'Seleccione') {
-        marcarError(ciudad, 'La ciudad de la sucursal es obligatorio');
-        hayErrores = true;
-    }
-
     fetch('/sucursales', {
         method: 'POST',
         headers: {
@@ -180,8 +156,6 @@ function guardar_crear() {
             nombre: nombre.value.trim(),
             telefono: telefono.value.trim(),
             direccion: direccion.value.trim(),
-            id_departamento: departamento.value.trim(),
-            id_ciudad: ciudad.value.trim(),
         })
     })
         .then(response => {
@@ -243,8 +217,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const nombre_ver = button.getAttribute('data-nombre');
         const direccion_ver = button.getAttribute('data-direccion');
         const telefono_ver = button.getAttribute('data-telefono');
-        const departamento_ver = button.getAttribute('data-departamento');
-        const ciudad_ver = button.getAttribute('data-ciudad');
         let estado = button.getAttribute('data-estado');
 
         // Separar nombre (opcional si lo tienes concatenado)
@@ -263,8 +235,6 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('estado_ver').value = estado;
         document.getElementById('direccion_ver').value = direccion_ver;
         document.getElementById('telefono_ver').value = telefono_ver;
-        document.getElementById('departamento_ver').value = departamento_ver;
-        document.getElementById('ciudad_ver').value = ciudad_ver;
 
     });
 });
@@ -654,7 +624,7 @@ function renderPaginacion(paginador) {
     contenedor.innerHTML = botones;
 }
 
-// GEOLOCALIZACIÓN
+/* GEOLOCALIZACIÓN
 
 let map;
 let marker;
@@ -770,3 +740,105 @@ document.querySelectorAll(".btnAbrirMapa").forEach(btn => {
         setTimeout(() => {map?.invalidateSize},300);
     });
 });
+
+document.querySelectorAll('.btnBuscar').forEach(input_buscar => {
+    input_buscar.addEventListener("click", buscarDireccion);
+});
+
+document.querySelectorAll('.buscarMapa').forEach(btn_mapa => {
+    btn_mapa.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+        e.preventDefault();
+        buscarDireccion();
+        }
+    });
+});
+
+function buscarDireccion() {
+    let direccion_mapa = document.querySelector(".buscarMapa").value.trim();
+    direccion_mapa = direccion_mapa
+    .replace(/#/g, " # ")
+    .replace(/,/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/([A-Za-záéíóúÁÉÍÓÚ])(\d)/g, "$1 $2")
+    .replace(/(\d)([A-Za-záéíóúÁÉÍÓÚ])/g, "$1 $2")
+    .trim();
+
+    if(direccion_mapa == "") {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        Toast.fire({
+            icon: "warning",
+            title: "Por favor, ingrese una dirección."
+        })
+
+        return;
+    }
+
+    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${direccion_mapa},Medellin,Colombia&limit=1`)
+         .then(response=>response.json())
+         .then(data=> {
+            if (data.length == 0) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "No se encontró la dirección."
+                })
+
+                return;
+            }
+
+            latitud = parseFloat(data[0].lat);
+            longitud = parseFloat(data[0].lon);
+
+            map.setView([latitud,longitud],18);
+
+            if(marker) {
+                marker.setLatLng([latitud,longitud]);
+            }else {
+                marker = L.marker([latitud,longitud], {draggable:true}).addTo(map);
+
+                marker.on("dragend", function (e) {
+                    latitud = e.target.getLatLng().lat;
+                    longitud = e.target.getLatLng().lng;
+                });
+            }
+        }).catch(error => {
+            const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                    }
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "Error buscando la dirección."
+                })
+
+            return;
+        })
+}*/
