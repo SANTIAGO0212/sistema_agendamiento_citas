@@ -81,48 +81,15 @@
                             <div class="col-md-6">
                                 <label for="direccion_label" class="form-label"> Dirección <span class="text-danger">*</span></label>
                                 <div class="d-flex align-items-center gap-2">
-                                    <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Ingrese la dirección de la sucursal" required>
-                                    <button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>
+                                    <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Ej: CL 00#00-00" required>
+                                    <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
                                 </div>
                                 <input type="hidden" class="latitud">
                                 <input type="hidden" class="longitud">
                             </div>
                         </div>
-                        <div class="row g-3 mb-3">
                             <!-- Departamento -->
-                            <div class="col-md-6">
-                                <label for="departamento_label" class="form-label">Departamento <span class="text-danger">*</span></label>
-                                <select
-                                    id="departamento" name=" departamento" class="form-control" required>
-                                    <option selected>Seleccione</option>
-                                    @foreach ($departamentos as $departamento)
-                                        <option value="{{ $departamento->id }}">
-                                            {{ $departamento->cod_departamento }}
-                                            -
-                                            {{ $departamento->nom_departamento }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <!-- Ciudad -->
-                            <div class="col-md-6">
-                                <label for="ciudad_label" class="form-label">Ciudad <span class="text-danger">*</span></label>
-                                <select
-                                    id="ciudad" name="ciudad" class="form-control" required>
-                                    <option selected>Seleccione</option>
-                                    @foreach ($ciudades as $ciudad)
-                                        <option value="{{ $ciudad->id }}">
-                                            {{ $ciudad->cod_ciudad }}
-                                            -
-                                            {{ $ciudad->nom_ciudad }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
                         <div class="row g-3">
-
                             <!-- Teléfono -->
                             <div class="col-md-6">
                                 <label for="telefono" class="form-label">Teléfono <span class="text-danger">*</span></label>
@@ -194,7 +161,7 @@
     {{-- Modal Actualizar --}}
    <div class="modal fade" id="exampleModalActualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Editar sucursales</h5>
@@ -206,19 +173,17 @@
                         <div class="row g-3 mb-3">
                             <input type="hidden" id="id_sucursal_actualizar" name="id_sucursal_actualizar">
                         </div>
-
-                        <div class="row g-4 mb-4">
-                            <div class="col-md-4">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-5">
                                 <label for="nombre_sucursal_label mb-2">Nombre sucursal <span
                                         style="color:red;">*</span></label>
                                 <input type="text" id="nombre_actualizar" name="nombre_actualizar" class="form-control" required>
                             </div>
-
-                            <div class="col-md-4">
+                            <div class="col-md-5">
                                 <label for="direccion_label mb-2">Dirección <span style="color:red;">*</span></label>
 
                                 <div class="d-flex align-items-center gap-2">
-                                    <input type="text" id="direccion_actualizar" name="direccion_actualizar" class="form-control direccion" required>
+                                    <input type="text" id="direccion_actualizar" name="direccion_actualizar" class="form-control direccion" required disabled>
 
                                     <button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>
                                 </div>
@@ -227,14 +192,12 @@
 
                                 <input type="hidden" class="longitud">
                             </div>
-
-                            <div class="col-md-4">
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-5">
                                 <label for="telefono_label mb-2">Teléfono <span style="color:red;">*</span></label>
                                 <input type="text" id="telefono_actualizar" name="telefono_actualizar" class="form-control">
                             </div>
-                        </div>
-
-                        <div class="row g-3 mb-3">
                             <div class="col-md-2" hidden>
                                 <label for="estado_label mb-2">Estado</label>
                                 <input type="text" id="estado_actualizar" name="estado_actualizar" class="form-control" disabled>
@@ -253,6 +216,7 @@
     </div>
 
     {{-- Modal Abrir Geolocalización --}}
+    {{--  
     <div class="modal fade" id="abrirModalMapa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -261,6 +225,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control buscarMapa" placeholder="Escribe una dirección">
+                        <button type="button" class="btn btn-dark btnBuscar"><i class="bx bx-search"></i></button>
+                    </div>
+                </div>
                 <div id="map" style="height:300px;">
 
                 </div>
@@ -270,7 +240,7 @@
             </div>
             </div>
         </div>
-    </div>
+    </div>--}}
 @endsection
 
 @push('scripts')
