@@ -68,7 +68,7 @@
                         <i class='bx bx-chevron-right arrow'></i>
                     </a>
 
-                    <a href="#">
+                    <a href="{{ route('modulos.servicio') }}">
                         <i class='bx bx-bookmark-alt'></i>
                         <span>Servicios</span>
                         <i class='bx bx-chevron-right arrow'></i>

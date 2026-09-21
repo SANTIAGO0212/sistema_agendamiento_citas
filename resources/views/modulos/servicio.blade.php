@@ -1,0 +1,214 @@
+@extends('layouts.panel')
+
+@section('content')
+
+    {{-- LISTAR SUCURSALES--}}
+    <div class="card mt-4 p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="mb-0">Servicios</h6>
+
+            <div class="d-flex align-items-center gap-2">
+
+                <!-- BOTONES -->
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Agregar
+                </button>
+
+                <!-- BUSCADOR -->
+                <div class="position-relative" style="width: 180px;">
+                    <i class='bx bx-search position-absolute'
+                        style="top: 50%; left: 10px; transform: translateY(-50%); color: gray;"></i>
+
+                    <input type="text" id="input_buscar" class="form-control ps-5" placeholder="Buscar...">
+                </div>
+
+            </div>
+        </div>
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <!--<th>#</th>-->
+                    <th>Nombre del servicio</th>
+                    <th>Descripción</th>
+                    <th class="text-center align-middle">Estado</th>
+                    <th class="text-center align-middle">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="tabla_servicios">
+
+            </tbody>
+        </table>
+        <div class="position-relative mt-3">
+            <div class="d-flex justify-content-center">
+                <select id="select_por_pagina" class="form-select" style="width:100px;">
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+
+            <div id="paginacion" class="position-absolute top-50 end-0 translate-middle-y">
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal--}}
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Agregar servicios
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <form method="post" id="form_create">
+                        @csrf
+                        <div class="row g-3 mb-3">
+                            <!-- Nombre -->
+                            <div class="col-md-6">
+                                <label for="nombre_sucursal_label" class="form-label">Nombre servicio <span class="text-danger">*</span></label>
+                                <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Ingrese el nombre de la sucursal" required>
+                            </div>
+                            <!-- Descripción -->
+                            <div class="col-md-6">
+                                <label for="direccion_label" class="form-label"> Descripción <span class="text-danger">*</span></label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <textarea type="text" class="form-control" id="descripcion" name="descripcion" placeholder="Ej: CL 00#00-00" required></textarea>
+                                    <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i> Cancelar</button>
+                    <button type="button" id="btn_save_create" name="btn_save_create" class="btn btn-primary" onclick="guardar_crear()"><i class="bx bx-save"></i>Guardar y crear</button>
+                    <button type="button" id="btn_save" name="btn_save" class="btn btn-primary" onclick="guardar_sucursal()"><i class="bx bx-save"></i>Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Ver --}}
+    <div class="modal fade" id="exampleModalVer" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ver información</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        <div class="row g-3 mb-3">
+                            <input type="text" id="id_servicio_ver" name="id_servicio_ver" disabled hidden>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="nombre_sucursal_label mb-2">Nombre servicio </label>
+                                <input type="text" id="nombre_ver" name="nombre" class="form-control" disabled>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="direccion_label mb-2">Descripción </label>
+                                <textarea type="text" class="form-control" id="descripcion_ver" name="descripcion_ver" disabled></textarea>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="estado_label mb-2">Estado</label>
+                                <input type="text" id="estado_ver" name="estado_ver" class="form-control" disabled>
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <!--<button type="button" class="btn btn-secondary me-2" data-bs-toggle="modal" data-bs-target="#exampleModalRestaurar"><i class="bx bx-arrow-from-right fs-2"></i> Regresar</button>-->
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i>Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Actualizar --}}
+   <div class="modal fade" id="exampleModalActualizar" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar servicios</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" id="form_create">
+                        @csrf
+                        <div class="row g-3 mb-3">
+                            <input type="hidden" id="id_servicio_actualizar" name="id_servicio_actualizar">
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-5">
+                                <label for="nombre_sucursal_label mb-2">Nombre servicio <span
+                                        style="color:red;">*</span></label>
+                                <input type="text" id="nombre_actualizar" name="nombre_actualizar" class="form-control" required>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="direccion_label mb-2">Descripción <span style="color:red;">*</span></label>
+
+                                <div class="d-flex align-items-center gap-2">
+                                    <textarea type="text" class="form-control" id="descripcion_actualizar" name="descripcion_actualizar" required></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-2" hidden>
+                                <label for="estado_label mb-2">Estado</label>
+                                <input type="text" id="estado_actualizar" name="estado_actualizar" class="form-control" disabled>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i>
+                        Cancelar</button>
+                    <button type="button" id="btn_save" name="btn_save" class="btn btn-primary" onclick="actualizar()"><i
+                            class="bx bx-save"></i> Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal Abrir Geolocalización --}}
+    {{--  
+    <div class="modal fade" id="abrirModalMapa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Seleccionar Ubicación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <input type="text" class="form-control buscarMapa" placeholder="Escribe una dirección">
+                        <button type="button" class="btn btn-dark btnBuscar"><i class="bx bx-search"></i></button>
+                    </div>
+                </div>
+                <div id="map" style="height:300px;">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="guardarDireccion" class="btn btn-dark">Seleccionar</button>
+            </div>
+            </div>
+        </div>
+    </div>--}}
+@endsection
+
+@push('scripts')
+    <script src="{{ asset('js/module_servicios.js') }}"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+@endpush

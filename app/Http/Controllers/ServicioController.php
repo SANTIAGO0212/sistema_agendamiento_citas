@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\ServicioService;
 use Illuminate\Http\JsonResponse;
+use App\Models\Servicio;
 
 class ServicioController extends Controller
 {
@@ -13,6 +14,11 @@ class ServicioController extends Controller
     public function __construct(ServicioService $service)
     {
         $this->servicioService = $service;
+    }
+
+    public function view() {
+        $servicios = Servicio::select('id', 'nombre', 'descripcion', 'estado')->where('estado', 1)->get();
+        return view('modulos.servicio', compact('servicios'));
     }
 
     /**

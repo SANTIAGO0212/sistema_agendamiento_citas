@@ -30,12 +30,14 @@ class ServicioService
 
     public function listar(?string $buscar = null, int $porPagina = 10)
     {
-        $query = Servicio::query();
+        $query = Servicio::select('id', 'nombre', 'descripcion', 'estado')->where('estado', 1);
 
         // Si hay filtro, aplica búsqueda
         if (!empty($buscar)) {
-            $query->where('nombre', 'LIKE', "%{$buscar}%")
-                ->orWhere('direccion', 'LIKE', "%{$buscar}%");
+            $query->where(function ($q) use ($buscar) {
+                $q->where('nombre', 'LIKE', "%{$buscar}%")
+                  ->orWhere('descripcion', 'LIKE', "%{$buscar}%");
+            });
         }
 
         // Si el parámetro de paginación es verdadero
@@ -83,7 +85,10 @@ class ServicioService
     public function eliminar(int $id)
     {
         $servicio = Servicio::findOrFail($id);
-        return $servicio->delete();
+        $servicio->estado = 0;
+        $servicio->save();
+
+        return $servicio;
     }
 
     /**

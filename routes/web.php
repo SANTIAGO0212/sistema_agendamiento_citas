@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\SucursalController;
+use App\Http\Controllers\ServicioController;
 
 Route::get('/', function () {
     return view('index');
@@ -38,6 +39,15 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/{id}', [SucursalController::class, 'actualizar']);
         Route::delete('/{id}', [SucursalController::class, 'eliminar']);
         Route::patch('/restaurar/{id}', [SucursalController::class, 'restaurar']);
+    });
+
+    Route::prefix('servicios')->group(function () {
+        Route::get('/modulos/servicio', [ServicioController::class, 'view'])->name('modulos.servicio');
+        Route::get('/', [ServicioController::class, 'listar']);
+        Route::post('/', [ServicioController::class, 'guardar']);
+        Route::put('/{id}', [ServicioController::class, 'actualizar']);
+        Route::delete('/{id}', [ServicioController::class, 'eliminar']);
+        Route::patch('/restaurar/{id}', [ServicioController::class, 'restaurar']);
     });
 
 });
