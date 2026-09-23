@@ -6,6 +6,8 @@ const formulario_create = document.getElementById('form_create');
 const modalElement = document.getElementById('exampleModal');
 const modalElementActualizar = document.getElementById('exampleModalActualizar');
 const modal_ver = document.getElementById('exampleModalVer');
+const selected = document.querySelector(".selected");
+const input_precio = document.querySelector(".input_precio");
 let hayErrores = false;
 let pagina_actual = 1;
 const token = document.querySelector('meta[name="csrf-token"]')?.content;
@@ -32,6 +34,14 @@ function marcarError(input, mensaje, textarea) {
     feedback.textContent = mensaje;
     feedback_area.textContent = mensaje;
 }
+
+selected.addEventListener('click', function () {
+    if (this.checked) {
+        input_precio.classList.remove('oculto');
+    } else {
+        input_precio.classList.add('oculto');
+    }
+});
 
 function limpiarError(input, textarea) {
     input.classList.remove('is-invalid');

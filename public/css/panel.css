@@ -258,3 +258,7 @@ html[data-theme="dark"] .icon-moon {
 .overlay.active {
     display: block;
 }
+
+.oculto {
+    display: none !important;
+}
