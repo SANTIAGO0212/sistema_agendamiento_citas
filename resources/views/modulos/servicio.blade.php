@@ -84,6 +84,18 @@
                                     <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <label for="direccion_label" class="form-label"> ¿Descuento? </label>
+                                <input class="form-check-input selected" type="checkbox" role="switch" id="switchCheckDefault">
+                            </div>
+
+                            <div class="col-md-6 input_precio oculto">
+                                <label for="direccion_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" id="precio" name="precio" class="form-control" placeholder="Ingrese el nombre de la sucursal" required>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -116,6 +128,18 @@
                             <div class="col-md-6">
                                 <label for="direccion_label mb-2">Descripción </label>
                                 <textarea type="text" class="form-control" id="descripcion_ver" name="descripcion_ver" disabled></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="direccion_label" class="form-label"> ¿Descuento? </label>
+                            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="direccion_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="text" id="precio" name="precio" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
+                                <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
                             </div>
                         </div>
                         <div class="row g-3 mb-3">
@@ -162,6 +186,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6">
+                            <label for="direccion_label" class="form-label"> ¿Descuento? </label>
+                            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="direccion_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="text" id="precio" name="precio" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
+                                <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
+                            </div>
+                        </div>
                         <div class="row g-3 mb-3">
                             <div class="col-md-2" hidden>
                                 <label for="estado_label mb-2">Estado</label>
@@ -179,33 +214,6 @@
             </div>
         </div>
     </div>
-
-    {{-- Modal Abrir Geolocalización --}}
-    {{--  
-    <div class="modal fade" id="abrirModalMapa" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Seleccionar Ubicación</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <div class="input-group">
-                        <input type="text" class="form-control buscarMapa" placeholder="Escribe una dirección">
-                        <button type="button" class="btn btn-dark btnBuscar"><i class="bx bx-search"></i></button>
-                    </div>
-                </div>
-                <div id="map" style="height:300px;">
-
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="guardarDireccion" class="btn btn-dark">Seleccionar</button>
-            </div>
-            </div>
-        </div>
-    </div>--}}
 @endsection
 
 @push('scripts')
