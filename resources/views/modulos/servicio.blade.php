@@ -86,14 +86,28 @@
                             </div>
 
                             <div class="col-md-6">
-                                <label for="direccion_label" class="form-label"> ¿Descuento? </label>
+                                <label for="precio_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" id="precio_inicial" name="precio_inicial" class="form-control" value="$ 0" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
                                 <input class="form-check-input selected" type="checkbox" role="switch" id="switchCheckDefault">
+                                <label for="direccion_label" class="form-label"> ¿Descuento?</label>
                             </div>
 
                             <div class="col-md-6 input_precio oculto">
-                                <label for="direccion_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                                <label for="precio_total_label" class="form-label"> Descuento </label>
                                 <div class="d-flex align-items-center gap-2">
-                                    <input type="text" id="precio" name="precio" class="form-control" placeholder="Ingrese el nombre de la sucursal" required>
+                                    <input type="number" id="descuento" name="descuento" class="form-control" placeholder="Ej: 10" autocomplete="off"><card>%</card> 
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="precio_total_label" class="form-label"> Precio total </label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" id="precio_total" name="precio_total" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -131,14 +145,21 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="direccion_label" class="form-label"> ¿Descuento? </label>
+                            <label for="precio_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="text" id="precio_ver" name="precio_ver" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
+                                <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                            <label for="descuento_label" class="form-label"> ¿Descuento? </label>
                         </div>
 
                         <div class="col-md-6">
-                            <label for="direccion_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                            <label for="precio_total_label" class="form-label"> Precio total <span class="text-danger">*</span></label>
                             <div class="d-flex align-items-center gap-2">
-                                <input type="text" id="precio" name="precio" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
+                                <input type="text" id="precio_total_ver" name="precio_total_ver" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
                                 <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
                             </div>
                         </div>
@@ -187,13 +208,20 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="direccion_label" class="form-label"> ¿Descuento? </label>
-                            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                            <label for="precio_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="text" id="precio_actualizar" name="precio_actualizar" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
+                                <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="direccion_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+                            <label for="descuento_label" class="form-label"> ¿Descuento? </label>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="precio_total_label" class="form-label"> Precio total <span class="text-danger">*</span></label>
                             <div class="d-flex align-items-center gap-2">
-                                <input type="text" id="precio" name="precio" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
+                                <input type="text" id="precio_total_actualizar" name="precio_total_actualizar" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
                                 <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
                             </div>
                         </div>
