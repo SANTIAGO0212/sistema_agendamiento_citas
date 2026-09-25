@@ -8,6 +8,9 @@ const modalElementActualizar = document.getElementById('exampleModalActualizar')
 const modal_ver = document.getElementById('exampleModalVer');
 const selected = document.querySelector(".selected");
 const input_precio = document.querySelector(".input_precio");
+const precio_inicial = document.getElementById("precio_inicial");
+const descuento = document.getElementById("descuento");
+const precio_total = document.getElementById("precio_total");
 let hayErrores = false;
 let pagina_actual = 1;
 const token = document.querySelector('meta[name="csrf-token"]')?.content;
@@ -613,3 +616,138 @@ function renderPaginacion(paginador) {
     `;
     contenedor.innerHTML = botones;
 }
+
+// Calcular el precio con el descuento para el precio total
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Formatear un número como moneda COP
+    function formatearMoneda(valor) {
+
+        // Convertir el valor a número
+        let numero = Number(valor);
+
+        // Evitar NaN
+        if (!Number.isFinite(numero)) {
+            return '';
+        }
+
+        // Redondear para evitar problemas de precisión decimal
+        numero = Math.round(numero);
+
+        return new Intl.NumberFormat('es-CO', {
+            style: 'currency',
+            currency: 'COP',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(numero);
+    }
+
+
+    // Obtener el valor numérico de un precio formateado
+    function obtenerValorNumerico(valor) {
+
+        if (!valor) {
+            return 0;
+        }
+
+        // Eliminar símbolo $, espacios y separadores
+        let numero = valor
+            .toString()
+            .replace(/\$/g, '')
+            .replace(/\s/g, '')
+            .replace(/\./g, '')
+            .replace(/,/g, '');
+
+        // Convertir a número
+        numero = Number(numero);
+
+        // Evitar NaN
+        if (!Number.isFinite(numero)) {
+            return 0;
+        }
+
+        return numero;
+    }
+
+
+    function calcularPrecioTotal() {
+
+        // Obtener precio limpio
+        let precio_valor = obtenerValorNumerico(precio_inicial.value);
+
+        if (selected.checked) {
+
+            let descuento_valor = Number(descuento.value) || 0;
+
+            // Calcular valor del descuento
+            let valor_descuento = precio_valor * (descuento_valor / 100);
+
+            // Calcular precio final
+            let precio_final = precio_valor - valor_descuento;
+
+            // Mostrar precio total formateado
+            precio_total.value = formatearMoneda(precio_final);
+
+        } else {
+
+            // Sin descuento
+            precio_total.value = formatearMoneda(precio_valor);
+        }
+    }
+
+
+    // Cuando cambia el precio
+    precio_inicial.addEventListener('input', function() {
+
+        // Obtener el valor sin formato
+        let valor = obtenerValorNumerico(this.value);
+
+        // Volver a mostrarlo como COP
+        this.value = formatearMoneda(valor);
+
+        // Calcular precio total
+        calcularPrecioTotal();
+    });
+
+
+    // Cambio del checkbox
+    selected.addEventListener('change', function() {
+
+        if (this.checked) {
+
+            input_precio.classList.remove('oculto');
+
+            calcularPrecioTotal();
+
+        } else {
+
+            input_precio.classList.add('oculto');
+
+            descuento.value = '';
+
+            calcularPrecioTotal();
+        }
+    });
+
+
+    // Cuando cambia el descuento
+    descuento.addEventListener('input', function() {
+
+        calcularPrecioTotal();
+
+    });
+
+
+    // Formatear precio inicial si ya tiene un valor
+    if (precio_inicial.value.trim() !== '') {
+
+        let valor_inicial = obtenerValorNumerico(precio_inicial.value);
+
+        precio_inicial.value = formatearMoneda(valor_inicial);
+    }
+
+
+    // Calcular precio total inicialmente
+    calcularPrecioTotal();
+
+});
