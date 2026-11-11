@@ -30,6 +30,10 @@
                     <!--<th>#</th>-->
                     <th>Nombre del servicio</th>
                     <th>Descripción</th>
+                    <th>Precio inicial</th>
+                    <th>Descuento</th>
+                    <th>Valor descuento</th>
+                    <th>Precio total</th>
                     <th class="text-center align-middle">Estado</th>
                     <th class="text-center align-middle">Acciones</th>
                 </tr>
@@ -88,7 +92,7 @@
                             <div class="col-md-6">
                                 <label for="precio_label" class="form-label"> Precio <span class="text-danger">*</span></label>
                                 <div class="d-flex align-items-center gap-2">
-                                    <input type="text" id="precio_inicial" name="precio_inicial" class="form-control" value="$ 0" required>
+                                    <input type="text" class="form-control precio_inicial" value="$ 0" required>
                                 </div>
                             </div>
 
@@ -100,14 +104,14 @@
                             <div class="col-md-6 input_precio oculto">
                                 <label for="precio_total_label" class="form-label"> Descuento </label>
                                 <div class="d-flex align-items-center gap-2">
-                                    <input type="number" id="descuento" name="descuento" class="form-control" placeholder="Ej: 10" autocomplete="off"><card>%</card> 
+                                    <input type="number" class="form-control descuento" maxlength="2"><span>%</span> 
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="precio_total_label" class="form-label"> Precio total </label>
                                 <div class="d-flex align-items-center gap-2">
-                                    <input type="text" id="precio_total" name="precio_total" class="form-control" readonly>
+                                    <input type="text" class="form-control precio_total" readonly>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +120,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="bx bx-x-circle"></i> Cancelar</button>
                     <button type="button" id="btn_save_create" name="btn_save_create" class="btn btn-primary" onclick="guardar_crear()"><i class="bx bx-save"></i>Guardar y crear</button>
-                    <button type="button" id="btn_save" name="btn_save" class="btn btn-primary" onclick="guardar_sucursal()"><i class="bx bx-save"></i>Guardar</button>
+                    <button type="button" id="btn_save" name="btn_save" class="btn btn-primary" onclick="guardar_servicio()"><i class="bx bx-save"></i>Guardar</button>
                 </div>
             </div>
         </div>
@@ -144,23 +148,33 @@
                                 <textarea type="text" class="form-control" id="descripcion_ver" name="descripcion_ver" disabled></textarea>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="precio_label" class="form-label"> Precio <span class="text-danger">*</span></label>
-                            <div class="d-flex align-items-center gap-2">
-                                <input type="text" id="precio_ver" name="precio_ver" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
-                                <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="precio_label" class="form-label"> Precio </label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" id="precio_inicial_ver" name="precio_inicial_ver" class="form-control" disabled>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <input class="form-check-input" id="selected_ver" name="selected_ver" type="checkbox" role="switch" disabled>
+                                <label for="direccion_label" class="form-label"> ¿Descuento?</label>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-                            <label for="descuento_label" class="form-label"> ¿Descuento? </label>
-                        </div>
 
-                        <div class="col-md-6">
-                            <label for="precio_total_label" class="form-label"> Precio total <span class="text-danger">*</span></label>
-                            <div class="d-flex align-items-center gap-2">
-                                <input type="text" id="precio_total_ver" name="precio_total_ver" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
-                                <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="precio_total_label" class="form-label"> Descuento </label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" id="descuento_ver" name="descuento_ver" class="form-control" disabled><span>%</span> 
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="precio_total_label" class="form-label"> Precio total </label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" id="precio_total_ver" name="precio_total_ver" class="form-control" disabled>
+                                </div>
                             </div>
                         </div>
                         <div class="row g-3 mb-3">
@@ -194,35 +208,43 @@
                             <input type="hidden" id="id_servicio_actualizar" name="id_servicio_actualizar">
                         </div>
                         <div class="row g-3 mb-3">
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <label for="nombre_sucursal_label mb-2">Nombre servicio <span
                                         style="color:red;">*</span></label>
                                 <input type="text" id="nombre_actualizar" name="nombre_actualizar" class="form-control" required>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <label for="direccion_label mb-2">Descripción <span style="color:red;">*</span></label>
 
                                 <div class="d-flex align-items-center gap-2">
                                     <textarea type="text" class="form-control" id="descripcion_actualizar" name="descripcion_actualizar" required></textarea>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="precio_label" class="form-label"> Precio <span class="text-danger">*</span></label>
-                            <div class="d-flex align-items-center gap-2">
-                                <input type="text" id="precio_actualizar" name="precio_actualizar" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
-                                <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
+                        
+                            <div class="col-md-6">
+                                <label for="precio_label" class="form-label"> Precio <span class="text-danger">*</span></label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" class="form-control precio_inicial" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-                            <label for="descuento_label" class="form-label"> ¿Descuento? </label>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="precio_total_label" class="form-label"> Precio total <span class="text-danger">*</span></label>
-                            <div class="d-flex align-items-center gap-2">
-                                <input type="text" id="precio_total_actualizar" name="precio_total_actualizar" class="form-control" placeholder="Ingrese el nombre de la sucursal" required hidden>
-                                <!--<button type="button" class="btn btn-dark btnAbrirMapa"><i class="bx bx-map"></i></button>-->
+
+                            <div class="col-md-6">
+                                <input class="form-check-input selected_actualizar" type="checkbox" role="switch" id="switchCheckDefault">
+                                <label for="direccion_label" class="form-label"> ¿Descuento?</label>
+                            </div>
+
+                            <div class="col-md-6 input_precio_actualizar oculto">
+                                <label for="precio_total_label" class="form-label"> Descuento </label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="number" class="form-control descuento"><span>%</span> 
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="precio_total_label" class="form-label"> Precio total </label>
+                                <div class="d-flex align-items-center gap-2">
+                                    <input type="text" class="form-control precio_total" readonly>
+                                </div>
                             </div>
                         </div>
                         <div class="row g-3 mb-3">

@@ -30,7 +30,7 @@ class ServicioService
 
     public function listar(?string $buscar = null, int $porPagina = 10)
     {
-        $query = Servicio::select('id', 'nombre', 'descripcion', 'estado')->where('estado', 1);
+        $query = Servicio::select('id', 'nombre', 'descripcion', 'valor_inicial', 'descuento', 'valor_descuento', 'valor_total','estado')->where('estado', 1);
 
         // Si hay filtro, aplica búsqueda
         if (!empty($buscar)) {

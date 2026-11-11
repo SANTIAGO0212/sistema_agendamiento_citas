@@ -24,6 +24,10 @@ class ServicioRequest extends FormRequest
         return [
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string|max:255',
+            'valor_inicial' => 'required|decimal:0,2',
+            'descuento' => 'required|boolean',
+            'valor_descuento' => 'decimal:0,2',
+            'valor_total' => 'required|decimal:0,2',
             'estado' => 'boolean',
         ];
     }

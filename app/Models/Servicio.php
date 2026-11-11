@@ -18,6 +18,10 @@ class Servicio extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
+        'valor_inicial',
+        'descuento',
+        'valor_descuento',
+        'valor_total',
         'estado',
     ];
     protected $dates = ['deleted_at'];
