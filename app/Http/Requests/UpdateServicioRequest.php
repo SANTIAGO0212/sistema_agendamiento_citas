@@ -24,6 +24,10 @@ class UpdateServicioRequest extends FormRequest
         return [
             'nombre' => 'string|max:255',
             'descripcion' => 'string|max:255',
+            'valor_inicial' => 'decimal:0,2',
+            'descuento' => 'boolean',
+            'valor_descuento' => 'decimal:0,2',
+            'valor_total' => 'decimal:0,2',
             'estado' => 'boolean',
         ];
     }
