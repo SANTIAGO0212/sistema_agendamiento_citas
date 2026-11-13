@@ -56,7 +56,7 @@
                         <i class='bx bx-chevron-right arrow'></i>
                     </a>
 
-                    <a href="#">
+                    <a href="{{ route('modulos.cita') }}">
                         <i class='bx bx-calendar-event'></i>
                         <span>Citas</span>
                         <i class='bx bx-chevron-right arrow'></i>

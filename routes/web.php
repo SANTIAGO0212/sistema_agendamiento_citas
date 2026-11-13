@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\SucursalController;
 use App\Http\Controllers\ServicioController;
+use App\Http\Controllers\CitasController;
 
 Route::get('/', function () {
     return view('index');
@@ -50,4 +51,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('/restaurar/{id}', [ServicioController::class, 'restaurar']);
     });
 
+    Route::prefix('citas')->group(function () {
+        Route::get('/modulos/cita', [CitasController::class, 'view'])->name('modulos.cita');
+        Route::get('/', [CitasController::class, 'listar']);
+        Route::post('/', [CitasController::class, 'guardar']);
+        Route::put('/{id}', [CitasController::class, 'actualizar']);
+        Route::delete('/{id}', [CitasController::class, 'eliminar']);
+        Route::patch('/restaurar/{id}', [CitasController::class, 'restaurar']);
+    });
 });

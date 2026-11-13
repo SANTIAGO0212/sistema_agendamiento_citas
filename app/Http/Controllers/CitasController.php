@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\CitaService;
+use App\Models\Cita;
 
 class CitasController extends Controller
 {
@@ -13,6 +14,11 @@ class CitasController extends Controller
     public function __construct(CitaService $service)
     {
         $this->citaService = $service;
+    }
+
+    public function view() {
+        $citas = Cita::select('id')->where('estado', 1)->get();
+        return view('modulos.cita', compact('citas'));
     }
 
     /**
